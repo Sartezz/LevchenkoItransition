@@ -8,7 +8,6 @@ import com.example.openweather.di.modules.app.AppModule
 class App : Application() {
     companion object {
         lateinit var instance: App
-        @JvmStatic
         lateinit var appComponent: AppComponent
     }
 

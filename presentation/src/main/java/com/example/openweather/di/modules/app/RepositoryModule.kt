@@ -1,16 +1,14 @@
 package com.example.openweather.di.modules.app
 
 import com.example.data.repository.WeatherInfoRepositoryImpl
-import com.example.data.rest.api.CurrentWeatherApi
 import com.example.domain.repository.WeatherRepository
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class RepositoryModule {
-    @Provides
+abstract class RepositoryModule {
+    @Binds
     @Singleton
-    fun provideRepository(weatherApi: CurrentWeatherApi): WeatherRepository =
-        WeatherInfoRepositoryImpl(weatherApi)
+    abstract fun provideRepository(weatherApi: WeatherInfoRepositoryImpl): WeatherRepository
 }

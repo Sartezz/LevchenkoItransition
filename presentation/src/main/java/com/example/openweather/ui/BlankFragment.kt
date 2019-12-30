@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.domain.repository.WeatherRepository
-import com.example.openweather.KEY
+import com.example.openweather.BuildConfig
 import com.example.openweather.R
 import com.example.openweather.app.App
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,7 +21,6 @@ class BlankFragment : Fragment() {
 
     @Inject
     lateinit var weatherInfoRepositoryImpl: WeatherRepository
-    private var disposableList = CompositeDisposable()
     private lateinit var disposable: Disposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +44,11 @@ class BlankFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        disposable.dispose()
+        super.onDestroyView()
+    }
+
     companion object {
         fun newInstance(key: String): BlankFragment {
             val bundle = Bundle()
@@ -56,16 +60,16 @@ class BlankFragment : Fragment() {
     }
 
     private fun getWeatherInfo(key: String?) {
-        disposable = weatherInfoRepositoryImpl.getWeatherInfo(key, KEY)
+        disposable = weatherInfoRepositoryImpl.getWeatherInfo(key, BuildConfig.API_KEY)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     city_name.text = it.name
-                    weather_type.text = it.Weather.first().main
-                    temperature.text = it.Main.temp.toString()
-                    temp_max.text = it.Main.temp_max.toString()
-                    temp_min.text = it.Main.temp_min.toString()
+                    weather_type.text = it.weather.first().main
+                    temperature.text = (it.main.temp - 273.15).toString()
+                    temp_max.text = (it.main.temp_max - 273.15).toString()
+                    temp_min.text = (it.main.temp_min - 273.15).toString()
                 },
                 { }
             )

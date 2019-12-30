@@ -20,7 +20,6 @@ import javax.inject.Singleton
 class NetworkModule {
     @Provides
     @Singleton
-    @NonNull
     fun provideOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder()
             .readTimeout(30, TimeUnit.SECONDS)
@@ -40,6 +39,6 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofoit(retrofitBuilder: Retrofit): CurrentWeatherApi =
+    fun provideRetrofit(retrofitBuilder: Retrofit): CurrentWeatherApi =
         retrofitBuilder.create(CurrentWeatherApi::class.java)
 }

@@ -1,9 +1,6 @@
 package com.example.openweather.di.modules.app
 
-import androidx.annotation.NonNull
-import com.example.data.repository.WeatherInfoRepositoryImpl
 import com.example.data.rest.api.CurrentWeatherApi
-import com.example.domain.repository.WeatherRepository
 import com.example.utils.BASE_URL
 import com.google.gson.GsonBuilder
 import dagger.Module

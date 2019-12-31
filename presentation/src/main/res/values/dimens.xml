@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="temperature_big">75sp</dimen>
+    <dimen name="city">50sp</dimen>
+    <dimen name="small_text">20sp</dimen>
+</resources>

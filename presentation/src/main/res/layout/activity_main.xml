@@ -5,28 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <Button
-        android:id="@+id/showWeather"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cityName_editText"
-        android:layout_centerHorizontal="true"
-        android:text="@string/show_weather" />
-
-    <EditText
-        android:id="@+id/cityName_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="#A3A1A1"
-        android:gravity="center"
-        android:text="Minsk" />
-
     <FrameLayout
         android:id="@+id/fragment_holder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
-
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

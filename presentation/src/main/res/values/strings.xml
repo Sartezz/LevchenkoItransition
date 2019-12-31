@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">OpenWeather</string>
     <string name="show_weather">Show Weather</string>
+    <string name="feels_like_text">Feels like:</string>
+    <string name="humidity_text">Humidity:</string>
+    <string name="wind"> Wind:%1$d speed: %2$f </string>
+    <string name="weather_icon">http://openweathermap.org/img/wn/%1$s@2x.png</string>
 </resources>

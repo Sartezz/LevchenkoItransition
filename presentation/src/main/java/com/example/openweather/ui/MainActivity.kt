@@ -10,13 +10,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            val fragment = BlankFragment.newInstance("Minsk")
+            val fragment = WeatherInfoFragment.newInstance("Minsk")
             supportFragmentManager
                 .beginTransaction()
                 .add(R.id.fragment_holder, fragment)
                 .commit()
         }
-
     }
 }
 

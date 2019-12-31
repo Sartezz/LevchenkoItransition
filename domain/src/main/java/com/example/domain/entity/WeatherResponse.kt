@@ -14,7 +14,7 @@ data class WeatherResponse(
     val wind: Wind,
     @SerializedName("clouds")
     val clouds: Clouds,
-    val dt: Int,
+    val dt: Long,
     @SerializedName("sys")
     val sys: Sys,
     val id: Int,

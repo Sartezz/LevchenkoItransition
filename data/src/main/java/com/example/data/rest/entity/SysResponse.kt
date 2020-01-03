@@ -1,6 +1,6 @@
-package com.example.domain.entity
+package com.example.data.rest.entity
 
-data class Sys(
+data class SysResponse(
     val type: Int,
     val id: Int,
     val message: String,

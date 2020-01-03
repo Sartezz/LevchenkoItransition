@@ -1,6 +1,6 @@
 package com.example.data.rest.api
 
-import com.example.domain.entity.WeatherResponse
+import com.example.data.rest.entity.WeatherInfoResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -11,5 +11,5 @@ interface CurrentWeatherApi {
         @Query("q") q: String?,
         @Query("units") units: String,
         @Query("appid") appid: String
-    ): Single<WeatherResponse>
+    ): Single<WeatherInfoResponse>
 }

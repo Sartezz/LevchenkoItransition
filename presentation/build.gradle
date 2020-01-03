@@ -73,4 +73,8 @@ dependencies {
     //lifecycle
     def lifecycle_version = "2.2.0-rc03"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+    def reactivestreams_version = "1.1.1"
+    implementation "android.arch.lifecycle:reactivestreams:$reactivestreams_version"
+
 }

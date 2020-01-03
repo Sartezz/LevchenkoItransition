@@ -1,22 +1,22 @@
-package com.example.domain.entity
+package com.example.data.rest.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class WeatherResponse(
+data class WeatherInfoResponse(
     @SerializedName("coord")
-    val coord: Coord,
+    val coord: CoordResponse,
     @SerializedName("weather")
-    val weather: List<Weather>,
+    val weather: List<WeatherResponse>,
     val base: String,
     @SerializedName("main")
-    val main: Main,
+    val main: MainResponse,
     val visibility: Int,
-    val wind: Wind,
+    val wind: WindResponse,
     @SerializedName("clouds")
-    val clouds: Clouds,
+    val clouds: CloudsResponse,
     val dt: Long,
     @SerializedName("sys")
-    val sys: Sys,
+    val sys: SysResponse,
     val id: Int,
     val name: String,
     val cod: Int

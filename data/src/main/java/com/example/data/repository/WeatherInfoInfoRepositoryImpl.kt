@@ -1,7 +1,8 @@
 package com.example.data.repository
 
 import com.example.data.rest.api.CurrentWeatherApi
-import com.example.domain.entity.WeatherResponse
+import com.example.data.rest.entity.transformToWeatherInfo
+import com.example.domain.entity.WeatherInfo
 import com.example.domain.repository.WeatherInfoRepository
 import io.reactivex.Single
 import javax.inject.Inject
@@ -13,6 +14,9 @@ class WeatherInfoInfoRepositoryImpl @Inject constructor(var weatherApi: CurrentW
         cityName: String?,
         units: String,
         key: String
-    ): Single<WeatherResponse> =
+    ): Single<WeatherInfo> =
         weatherApi.getWeatherInfo(cityName, units, key)
+            .map {
+                it.transformToWeatherInfo()
+            }
 }

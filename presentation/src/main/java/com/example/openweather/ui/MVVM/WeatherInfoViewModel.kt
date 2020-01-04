@@ -1,4 +1,4 @@
-package com.example.openweather.ui
+package com.example.openweather.ui.MVVM
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

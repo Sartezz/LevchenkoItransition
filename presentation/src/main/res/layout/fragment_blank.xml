@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.openweather.ui.MVVM.WeatherInfoViewModel" />
+            type="com.example.openweather.ui.mvvm.WeatherInfoViewModel" />
 
         <import type="com.example.openweather.utils.Converter" />
 
@@ -19,7 +19,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#5BA6FF">
+        android:background="@color/weatherAppColor">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fragment_view"
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.weatherInfo.name}"
-                android:textSize="@dimen/city"
+                android:textSize="@dimen/big_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -63,7 +63,6 @@
 
             <ImageView
                 android:id="@+id/weather_icon"
-
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="@dimen/margin_twenty"
@@ -76,6 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_twenty"
+                android:text="@{@string/temperature(viewModel.weatherInfo.temp)}"
                 android:textSize="@dimen/temperature"
                 app:layout_constraintStart_toStartOf="@+id/weather_icon"
                 app:layout_constraintTop_toBottomOf="@+id/weather_icon"
@@ -86,6 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_ten"
+                android:text="@{DateUtils.parseString(viewModel.weatherInfo.tempMax)}"
                 android:textSize="@dimen/small_text"
                 app:layout_constraintBottom_toTopOf="@+id/temp_min"
                 app:layout_constraintStart_toEndOf="@+id/temperature"
@@ -96,6 +97,7 @@
                 android:id="@+id/temp_min"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{String.valueOf(viewModel.weatherInfo.tempMin) + @string/humidity_text}"
                 android:textSize="@dimen/small_text"
                 app:layout_constraintBottom_toBottomOf="@+id/temperature"
                 app:layout_constraintStart_toStartOf="@+id/temp_max"
@@ -107,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_ten"
-                android:text="@string/wind_speed_text"
+                android:text="@{Converter.toString(temperature, viewModel.weatherInfo.windSpeed)}"
                 android:textSize="@dimen/small_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/temperature"
@@ -119,6 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_ten"
+                android:text="@{Converter.toString(temperature, viewModel.weatherInfo.windDeg)}"
                 android:textSize="@dimen/small_text"
                 app:layout_constraintStart_toStartOf="@+id/wind_speed"
                 app:layout_constraintTop_toBottomOf="@+id/wind_speed"
@@ -170,6 +173,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_ten"
+                android:text="@{Converter.toString(temperature, viewModel.weatherInfo.feelsLike)}"
                 android:textSize="@dimen/small_text"
                 app:layout_constraintStart_toStartOf="@+id/feels_like_text"
                 app:layout_constraintTop_toBottomOf="@+id/feels_like_text"
@@ -189,6 +193,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_ten"
+                android:text="@{Converter.toString(temperature, viewModel.weatherInfo.humidity)}"
                 android:textSize="@dimen/small_text"
                 app:layout_constraintStart_toStartOf="@+id/humidity_text"
                 app:layout_constraintTop_toBottomOf="@+id/humidity_text"

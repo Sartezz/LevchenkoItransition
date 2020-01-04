@@ -12,4 +12,8 @@ object DateUtils {
     fun parseSmallDate(date: Long): String {
         return DateFormat.getTimeInstance(DateFormat.SHORT).format(date)
     }
+    @JvmStatic
+    fun parseString(double: Double):String{
+        return "$double°"
+    }
 }

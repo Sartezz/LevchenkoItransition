@@ -1,7 +1,7 @@
 package com.example.openweather.di.modules.app
 
 import com.example.domain.repository.WeatherInfoRepository
-import com.example.openweather.ui.MVVM.WeatherInfoViewModelFactory
+import com.example.openweather.ui.mvvm.WeatherInfoViewModelFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

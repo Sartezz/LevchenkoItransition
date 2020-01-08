@@ -3,13 +3,11 @@
     <string name="show_weather">Show Weather</string>
     <string name="feels_like_text">Чувствуется:</string>
     <string name="humidity_text">Влажность:</string>
-    <string name="humidity_info">%1$d</string>
+    <string name="humidity_info">%1$d%%</string>
     <string name="wind_speed"> Скорость: %1$.1f м/с </string>
     <string name="wind_deg"> Угол: %1$d° </string>
     <string name="temperature">%1$.1f°C</string>
     <string name="weather_icon">http://openweathermap.org/img/wn/%1$s@2x.png</string>
     <string name="sunrise_text">Восход</string>
     <string name="sunset_text">Закат</string>
-    <string name="wind_degree_text">Направление</string>
-    <string name="wind_speed_text">Скорость ветра:</string>
 </resources>

@@ -6,26 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.domain.repository.WeatherInfoRepository
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.openweather.R
 import com.example.openweather.app.App
-import com.example.openweather.databinding.FragmentBlankBinding
+import com.example.openweather.databinding.WeatherInfoFragmentBinding
 import com.example.openweather.ui.mvvm.WeatherInfoViewModel
 import com.example.openweather.ui.mvvm.WeatherInfoViewModelFactory
-import kotlinx.android.synthetic.main.fragment_blank.*
-import java.text.DateFormat
+import kotlinx.android.synthetic.main.weather_info_fragment.*
 import javax.inject.Inject
 
 class WeatherInfoFragment : Fragment() {
-
-    @Inject
-    lateinit var weatherInfoInfoRepositoryImpl: WeatherInfoRepository
     @Inject
     lateinit var weatherInfoViewModelFactory: WeatherInfoViewModelFactory
 
-    private lateinit var binding: FragmentBlankBinding
+    private lateinit var binding: WeatherInfoFragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
@@ -36,7 +31,8 @@ class WeatherInfoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_blank, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.weather_info_fragment, container, false)
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -48,7 +44,11 @@ class WeatherInfoFragment : Fragment() {
             .get(WeatherInfoViewModel::class.java)
 
         binding.viewModel = viewModel
-        R.string.app_name
+
+        swipe_to_refresh.setOnRefreshListener {
+            viewModel.getWeatherInfo()
+            swipe_to_refresh.isRefreshing = false
+        }
     }
 
     companion object {

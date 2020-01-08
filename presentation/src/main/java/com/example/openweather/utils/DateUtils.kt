@@ -6,12 +6,12 @@ import java.text.DateFormat
 object DateUtils {
 
     @JvmStatic
-    fun parseBigDate(date: Long): String {
+    fun formatToFullDate(date: Long): String {
         return DateFormat.getDateInstance().format(date * DateUtils.SECOND_IN_MILLIS)
     }
 
     @JvmStatic
-    fun parseSmallDate(date: Long): String {
+    fun formatToTime(date: Long): String {
         return DateFormat.getTimeInstance(DateFormat.SHORT).format(date)
     }
 }

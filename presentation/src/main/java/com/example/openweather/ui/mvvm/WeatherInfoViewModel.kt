@@ -12,22 +12,26 @@ import io.reactivex.schedulers.Schedulers
 
 class WeatherInfoViewModel(private val weatherInfoRepository: WeatherInfoRepository) :
     ViewModel() {
-    private  var disposableList = CompositeDisposable()
+    private val disposableList = CompositeDisposable()
     var weatherInfo: MutableLiveData<WeatherInfo> = MutableLiveData()
 
-    init {
-        disposableList.add(getWeatherInfo())
-
+    fun getWeatherInfo(onSuccess: () -> Unit, onError: () -> Unit) {
+        disposableList.add(
+            weatherInfoRepository.getWeatherInfo(
+                "Minsk",
+                "metric",
+                BuildConfig.API_KEY
+            )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    weatherInfo.value = it
+                    onSuccess()
+                }, {
+                    onError()
+                })
+        )
     }
-
-    fun getWeatherInfo(): Disposable =
-        weatherInfoRepository.getWeatherInfo("Minsk", "metric", BuildConfig.API_KEY)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                weatherInfo.value = it
-            }, {})
-
 
     override fun onCleared() {
         disposableList.dispose()

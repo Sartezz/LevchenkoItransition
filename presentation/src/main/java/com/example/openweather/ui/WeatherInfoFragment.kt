@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.openweather.R
 import com.example.openweather.app.App
 import com.example.openweather.databinding.WeatherInfoFragmentBinding
@@ -19,6 +19,7 @@ import javax.inject.Inject
 class WeatherInfoFragment : Fragment() {
     @Inject
     lateinit var weatherInfoViewModelFactory: WeatherInfoViewModelFactory
+    private lateinit var viewModel: WeatherInfoViewModel
 
     private lateinit var binding: WeatherInfoFragmentBinding
 
@@ -34,21 +35,34 @@ class WeatherInfoFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.weather_info_fragment, container, false)
         binding.lifecycleOwner = this
+
+        viewModel = ViewModelProvider(this, weatherInfoViewModelFactory)
+            .get(WeatherInfoViewModel::class.java)
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel = ViewModelProvider(this, weatherInfoViewModelFactory)
-            .get(WeatherInfoViewModel::class.java)
-
         binding.viewModel = viewModel
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        getWeatherInfo()
 
         swipe_to_refresh.setOnRefreshListener {
-            viewModel.getWeatherInfo()
-            swipe_to_refresh.isRefreshing = false
+            viewModel.getWeatherInfo({
+                swipe_to_refresh.isRefreshing = false
+            }, { Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show() })
         }
+    }
+
+    private fun getWeatherInfo() {
+        viewModel.getWeatherInfo(
+            { fragment_view.visibility = View.VISIBLE },
+            { fragment_view.visibility = View.INVISIBLE })
     }
 
     companion object {

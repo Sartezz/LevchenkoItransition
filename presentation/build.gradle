@@ -80,7 +80,10 @@ dependencies {
     def lifecycle_version = "2.2.0-rc03"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
-    def reactivestreams_version = "1.1.1"
-    implementation "android.arch.lifecycle:reactivestreams:$reactivestreams_version"
+    //Room
+    def room_version = "2.2.3"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
 
 }

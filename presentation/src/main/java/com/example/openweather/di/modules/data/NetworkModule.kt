@@ -1,4 +1,4 @@
-package com.example.openweather.di.modules.app
+package com.example.openweather.di.modules.data
 
 import com.example.data.rest.api.CurrentWeatherApi
 import com.example.utils.BASE_URL

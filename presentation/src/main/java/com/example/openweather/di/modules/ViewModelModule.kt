@@ -1,4 +1,4 @@
-package com.example.openweather.di.modules.app
+package com.example.openweather.di.modules
 
 import com.example.domain.repository.WeatherInfoRepository
 import com.example.openweather.ui.mvvm.WeatherInfoViewModelFactory

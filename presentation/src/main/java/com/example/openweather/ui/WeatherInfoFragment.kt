@@ -26,6 +26,9 @@ class WeatherInfoFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProvider(this, weatherInfoViewModelFactory)
+            .get(WeatherInfoViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -35,9 +38,6 @@ class WeatherInfoFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.weather_info_fragment, container, false)
         binding.lifecycleOwner = this
-
-        viewModel = ViewModelProvider(this, weatherInfoViewModelFactory)
-            .get(WeatherInfoViewModel::class.java)
         return binding.root
     }
 
@@ -45,24 +45,38 @@ class WeatherInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewModel = viewModel
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        getWeatherInfo()
+        if (savedInstanceState == null) {
+            getWeatherInfo()
+        } else {
+            fragment_view.visibility = View.VISIBLE
+        }
 
         swipe_to_refresh.setOnRefreshListener {
-            viewModel.getWeatherInfo({
-                swipe_to_refresh.isRefreshing = false
-            }, { Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show() })
+            refreshWeatherInfo()
         }
+
+        binding.viewModel = viewModel
     }
 
     private fun getWeatherInfo() {
         viewModel.getWeatherInfo(
-            { fragment_view.visibility = View.VISIBLE },
-            { fragment_view.visibility = View.INVISIBLE })
+            {
+                fragment_view.visibility = View.VISIBLE
+                swipe_to_refresh.isRefreshing = false
+            },
+            {
+                fragment_view.visibility = View.INVISIBLE
+                swipe_to_refresh.isRefreshing = false
+            })
+    }
+
+    private fun refreshWeatherInfo() {
+        viewModel.getWeatherInfo({
+            swipe_to_refresh.isRefreshing = false
+        }, {
+            Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show()
+            swipe_to_refresh.isRefreshing = false
+        })
     }
 
     companion object {

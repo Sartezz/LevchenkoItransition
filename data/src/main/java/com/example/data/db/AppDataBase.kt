@@ -11,14 +11,5 @@ import com.example.utils.DATABASE
 
 @Database(entities = [WeatherInfoDb::class], version = 1, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
-    companion object {
-        fun getInstance(context: Context): AppDataBase {
-            return Room
-                .databaseBuilder(context, AppDataBase::class.java, DATABASE)
-                .fallbackToDestructiveMigration()
-                .build()
-        }
-    }
-
     abstract fun weatherInfoDao(): WeatherInfoDao
 }

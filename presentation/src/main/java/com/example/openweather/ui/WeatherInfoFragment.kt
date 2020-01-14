@@ -1,6 +1,7 @@
 package com.example.openweather.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,8 +66,8 @@ class WeatherInfoFragment : Fragment() {
                 swipe_to_refresh.isRefreshing = false
             },
             {
-                fragment_view.visibility = View.INVISIBLE
                 swipe_to_refresh.isRefreshing = false
+                Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show()
             })
     }
 

@@ -9,8 +9,7 @@ import io.reactivex.Single
 import javax.inject.Inject
 
 class WeatherInfoRepositoryImpl @Inject constructor(
-    private val weatherApi: CurrentWeatherApi,
-    private val weatherInfoDao: WeatherInfoDao
+    private val weatherApi: CurrentWeatherApi
 ) :
     WeatherInfoRepository {
 
@@ -18,10 +17,12 @@ class WeatherInfoRepositoryImpl @Inject constructor(
         cityName: String?,
         units: String,
         key: String
-    ): Single<WeatherInfo> =
-        weatherApi.getWeatherInfo(cityName, units, key)
+    ): Single<WeatherInfo> {
+        return weatherApi.getWeatherInfo(cityName, units, key)
             .map {
                 it.transformToWeatherInfo()
-
             }
+
+    }
+
 }

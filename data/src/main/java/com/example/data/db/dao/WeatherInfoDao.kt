@@ -1,21 +1,19 @@
 package com.example.data.db.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.data.db.entity.WeatherInfoDb
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.Maybe
+import io.reactivex.Observable
 
 @Dao
 interface WeatherInfoDao {
     @Insert
     fun addWeatherInfo(weatherInfo: WeatherInfoDb): Completable
 
-    @Delete
-    fun deleteWeatherInfo(weatherInfo: WeatherInfoDb): Completable
-
     @Query("SELECT * FROM weatherInfo")
-    fun getWeatherInfo(): Flowable<List<WeatherInfoDb>>
+    fun getWeatherInfo(): Maybe<WeatherInfoDb>
+
+    @Query("DELETE FROM weatherInfo where id NOT IN (SELECT id from weatherInfo ORDER BY id DESC LIMIT 1)")
+    fun deleteWeatherInfo()
 }

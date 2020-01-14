@@ -20,6 +20,22 @@ fun WeatherInfoResponse.transformToWeatherInfo() = WeatherInfo(
     main.feelsLike
 )
 
+fun WeatherInfoDb.transformToWeatherInfo() = WeatherInfo(
+    name,
+    dt,
+    main,
+    icon,
+    temp,
+    tempMin,
+    tempMax,
+    windSpeed,
+    windDeg,
+    sunrise,
+    sunset,
+    humidity,
+    feelsLike
+)
+
 fun WeatherInfo.transformToWeatherInfoDb() = WeatherInfoDb(
     null,
     name,

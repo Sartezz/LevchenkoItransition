@@ -5,14 +5,17 @@ import com.example.data.rest.api.CurrentWeatherApi
 import com.example.domain.entity.WeatherInfo
 import com.example.domain.repository.WeatherInfoRepository
 import com.example.utils.transformToWeatherInfo
+import com.example.utils.transformToWeatherInfoDb
+import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class WeatherInfoRepositoryImpl @Inject constructor(
-    private val weatherApi: CurrentWeatherApi
+    private val weatherApi: CurrentWeatherApi,
+    private val weatherInfoDao: WeatherInfoDao
 ) :
     WeatherInfoRepository {
-
     override fun getWeatherInfo(
         cityName: String?,
         units: String,
@@ -22,7 +25,13 @@ class WeatherInfoRepositoryImpl @Inject constructor(
             .map {
                 it.transformToWeatherInfo()
             }
-
+            .doOnSuccess {
+                Completable.fromAction { weatherInfoDao.deleteWeatherInfo() }
+                    .andThen(weatherInfoDao.addWeatherInfo(it.transformToWeatherInfoDb()))
+            }
+            .onErrorResumeNext(weatherInfoDao.getWeatherInfo().map {
+                it.transformToWeatherInfo()
+            }.toSingle())
     }
 
 }

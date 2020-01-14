@@ -1,7 +1,6 @@
 package com.example.openweather.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.openweather.R
 import com.example.openweather.app.App
 import com.example.openweather.databinding.WeatherInfoFragmentBinding
-import com.example.openweather.ui.mvvm.WeatherInfoViewModel
-import com.example.openweather.ui.mvvm.WeatherInfoViewModelFactory
+import com.example.openweather.ui.mvvm.WeatherInfo.WeatherInfoViewModel
+import com.example.openweather.ui.mvvm.WeatherInfo.WeatherInfoViewModelFactory
 import kotlinx.android.synthetic.main.weather_info_fragment.*
 import javax.inject.Inject
 

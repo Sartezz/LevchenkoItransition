@@ -13,4 +13,6 @@
     <string name="error_text">Error</string>
     <string name="Minsk">Minsk</string>
     <string name="weather_description">Weather description</string>
+    <string name="forecast">Forecast</string>
+    <string name="today">Today</string>
 </resources>

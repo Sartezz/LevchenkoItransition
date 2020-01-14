@@ -1,4 +1,4 @@
-package com.example.openweather.ui.mvvm
+package com.example.openweather.ui.mvvm.WeatherInfo
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +14,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class WeatherInfoViewModel(
-    private val weatherInfoRepository: WeatherInfoRepository,
-    private val weatherInfoDao: WeatherInfoDao
+    private val weatherInfoRepository: WeatherInfoRepository
 ) :
     ViewModel() {
     private val disposableList = CompositeDisposable()
@@ -28,27 +27,13 @@ class WeatherInfoViewModel(
                 "metric",
                 BuildConfig.API_KEY
             )
-                .onErrorResumeNext(weatherInfoDao.getWeatherInfo().map {
-                    it.transformToWeatherInfo()
-                }.toSingle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
                         weatherInfo.value = it
-                        disposableList.add(
-                             Completable.fromCallable { weatherInfoDao.deleteWeatherInfo() }
-                            .subscribeOn(Schedulers.io())
-                            .subscribe()
-                        )
-                        disposableList.add(
-                            weatherInfoDao.addWeatherInfo(it.transformToWeatherInfoDb())
-                                .subscribeOn(Schedulers.io())
-                                .subscribe()
-                        )
                         onSuccess()
-                    },
-                    {
+                    }, {
                         onError()
                     })
         )

@@ -1,6 +1,6 @@
 package com.example.openweather.di.modules.data
 
-import com.example.data.rest.api.CurrentWeatherApi
+import com.example.data.rest.api.OpenWeatherApi
 import com.example.utils.BASE_URL
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -36,6 +36,6 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(retrofitBuilder: Retrofit): CurrentWeatherApi =
-        retrofitBuilder.create(CurrentWeatherApi::class.java)
+    fun provideRetrofit(retrofitBuilder: Retrofit): OpenWeatherApi =
+        retrofitBuilder.create(OpenWeatherApi::class.java)
 }

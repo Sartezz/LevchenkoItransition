@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.openweather.ui.mvvm.WeatherInfo.WeatherInfoViewModel" />
+            type="com.example.openweather.ui.mvvm.weatherInfo.WeatherInfoViewModel" />
 
         <import type="com.example.openweather.utils.Converter" />
 

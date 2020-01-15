@@ -1,4 +1,4 @@
-package com.example.openweather.ui
+package com.example.openweather.ui.mvvm.weatherInfo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.openweather.R
 import com.example.openweather.app.App
 import com.example.openweather.databinding.WeatherInfoFragmentBinding
-import com.example.openweather.ui.mvvm.WeatherInfo.WeatherInfoViewModel
-import com.example.openweather.ui.mvvm.WeatherInfo.WeatherInfoViewModelFactory
 import kotlinx.android.synthetic.main.weather_info_fragment.*
 import javax.inject.Inject
 
@@ -20,7 +18,6 @@ class WeatherInfoFragment : Fragment() {
     @Inject
     lateinit var weatherInfoViewModelFactory: WeatherInfoViewModelFactory
     private lateinit var viewModel: WeatherInfoViewModel
-
     private lateinit var binding: WeatherInfoFragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,6 +1,6 @@
 package com.example.data.rest.api
 
-import com.example.data.rest.entity.WeatherInfoResponse
+import com.example.data.rest.entity.currentWeather.WeatherInfoResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

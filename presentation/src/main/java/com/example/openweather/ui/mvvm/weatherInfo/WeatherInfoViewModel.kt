@@ -1,14 +1,10 @@
-package com.example.openweather.ui.mvvm.WeatherInfo
+package com.example.openweather.ui.mvvm.weatherInfo
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.data.db.dao.WeatherInfoDao
 import com.example.domain.entity.WeatherInfo
 import com.example.domain.repository.WeatherInfoRepository
 import com.example.openweather.BuildConfig
-import com.example.utils.transformToWeatherInfo
-import com.example.utils.transformToWeatherInfoDb
-import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

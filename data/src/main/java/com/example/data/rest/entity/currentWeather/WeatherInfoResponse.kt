@@ -1,4 +1,4 @@
-package com.example.data.rest.entity
+package com.example.data.rest.entity.currentWeather
 
 import com.google.gson.annotations.SerializedName
 

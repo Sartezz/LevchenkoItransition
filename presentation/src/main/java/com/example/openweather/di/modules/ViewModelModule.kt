@@ -1,8 +1,8 @@
 package com.example.openweather.di.modules
 
 import com.example.domain.repository.WeatherInfoRepository
-import com.example.openweather.ui.mvvm.WeatherForecast.ForecastViewModelFactory
-import com.example.openweather.ui.mvvm.WeatherInfo.WeatherInfoViewModelFactory
+import com.example.openweather.ui.mvvm.weatherForecast.ForecastViewModelFactory
+import com.example.openweather.ui.mvvm.weatherInfo.WeatherInfoViewModelFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -16,6 +16,5 @@ class ViewModelModule {
 
     @Provides
     @Singleton
-    fun provideForecastViewModelFactory(
-    ): ForecastViewModelFactory = ForecastViewModelFactory()
+    fun provideForecastViewModelFactory(): ForecastViewModelFactory = ForecastViewModelFactory()
 }

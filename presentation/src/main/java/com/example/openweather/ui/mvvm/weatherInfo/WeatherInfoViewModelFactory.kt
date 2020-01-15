@@ -1,4 +1,4 @@
-package com.example.openweather.ui.mvvm.WeatherInfo
+package com.example.openweather.ui.mvvm.weatherInfo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

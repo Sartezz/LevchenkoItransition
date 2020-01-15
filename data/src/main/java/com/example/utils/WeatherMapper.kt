@@ -1,7 +1,7 @@
 package com.example.utils
 
 import com.example.data.db.entity.WeatherInfoDb
-import com.example.data.rest.entity.WeatherInfoResponse
+import com.example.data.rest.entity.currentWeather.WeatherInfoResponse
 import com.example.domain.entity.WeatherInfo
 
 fun WeatherInfoResponse.transformToWeatherInfo() = WeatherInfo(

@@ -32,5 +32,4 @@ class WeatherInfoRepositoryImpl @Inject constructor(
                 it.transformToWeatherInfo()
             }.toSingle())
     }
-
 }

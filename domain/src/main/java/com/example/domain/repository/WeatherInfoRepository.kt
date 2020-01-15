@@ -1,6 +1,6 @@
 package com.example.domain.repository
 
-import com.example.domain.entity.WeatherInfo
+import com.example.domain.entity.weatherInfo.WeatherInfo
 import io.reactivex.Single
 
 interface WeatherInfoRepository {

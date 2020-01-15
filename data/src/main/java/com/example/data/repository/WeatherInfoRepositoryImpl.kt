@@ -2,7 +2,7 @@ package com.example.data.repository
 
 import com.example.data.db.dao.WeatherInfoDao
 import com.example.data.rest.api.OpenWeatherApi
-import com.example.domain.entity.WeatherInfo
+import com.example.domain.entity.weatherInfo.WeatherInfo
 import com.example.domain.repository.WeatherInfoRepository
 import com.example.utils.transformToWeatherInfo
 import com.example.utils.transformToWeatherInfoDb

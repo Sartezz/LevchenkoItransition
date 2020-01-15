@@ -2,7 +2,7 @@ package com.example.openweather.ui.mvvm.weatherInfo
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.domain.entity.WeatherInfo
+import com.example.domain.entity.weatherInfo.WeatherInfo
 import com.example.domain.repository.WeatherInfoRepository
 import com.example.openweather.BuildConfig
 import io.reactivex.android.schedulers.AndroidSchedulers

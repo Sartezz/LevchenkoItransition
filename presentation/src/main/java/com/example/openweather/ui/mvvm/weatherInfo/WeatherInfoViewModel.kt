@@ -9,10 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class WeatherInfoViewModel(
-    private val weatherInfoRepository: WeatherInfoRepository
-) :
-    ViewModel() {
+class WeatherInfoViewModel(private val weatherInfoRepository: WeatherInfoRepository) : ViewModel() {
     private val disposableList = CompositeDisposable()
     var weatherInfo: MutableLiveData<WeatherInfo> = MutableLiveData()
 

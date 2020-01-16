@@ -1,6 +1,7 @@
 package com.example.openweather.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.openweather.R
 import com.example.openweather.ui.mvvm.weatherForecast.ForecastFragment

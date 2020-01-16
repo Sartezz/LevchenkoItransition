@@ -9,5 +9,5 @@ data class MainResponse(
     val sea_level: Int,
     val grnd_level: Int,
     val humidity: Int,
-    val temp_kf: Int
+    val temp_kf: Double
 )

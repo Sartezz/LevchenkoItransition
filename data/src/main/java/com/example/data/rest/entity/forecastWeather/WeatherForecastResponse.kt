@@ -1,6 +1,6 @@
 package com.example.data.rest.entity.forecastWeather
 
-data class ForecastResponseList(
+data class WeatherForecastResponse(
     val dt: Long,
     val main: MainResponse,
     val weather: List<WeatherResponse>,

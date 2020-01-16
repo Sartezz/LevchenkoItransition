@@ -1,9 +1,9 @@
 package com.example.data.rest.entity.forecastWeather
 
-data class ForecastWeatherInfoResponse(
+data class ForecastApiResponse(
     val cod: String,
     val message: Int,
     val cnt: Int,
-    val list: List<ForecastResponseList>,
+    val list: List<WeatherForecastResponse>,
     val city: CityResponse
 )

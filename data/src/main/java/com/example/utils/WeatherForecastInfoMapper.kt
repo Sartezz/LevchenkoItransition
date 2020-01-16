@@ -1,11 +1,9 @@
 package com.example.utils
 
-import com.example.data.rest.entity.forecastWeather.ForecastResponseList
-import com.example.data.rest.entity.forecastWeather.ForecastWeatherInfoResponse
-import com.example.domain.entity.forecastWeatherInfo.ForecastList
-import com.example.domain.entity.forecastWeatherInfo.ForecastWeatherInfo
+import com.example.data.rest.entity.forecastWeather.WeatherForecastResponse
+import com.example.domain.entity.forecastWeatherInfo.WeatherForecast
 
-fun ForecastResponseList.transformToForecastList() = ForecastList(
+fun WeatherForecastResponse.transformToWeatherForecast() = WeatherForecast(
     dt,
     weather[0].main,
     weather[0].icon,
@@ -17,6 +15,3 @@ fun ForecastResponseList.transformToForecastList() = ForecastList(
     main.humidity,
     main.feels_like
 )
-
-fun ForecastWeatherInfoResponse.transformToForecastWeatherInfo() = ForecastWeatherInfo(
-    city.name, cnt, city.sunrise, city.sunset, list.map { it.transformToForecastList() })

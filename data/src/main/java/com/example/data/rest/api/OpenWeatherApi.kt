@@ -1,7 +1,7 @@
 package com.example.data.rest.api
 
 import com.example.data.rest.entity.currentWeather.WeatherInfoResponse
-import com.example.data.rest.entity.forecastWeather.ForecastWeatherInfoResponse
+import com.example.data.rest.entity.forecastWeather.ForecastApiResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -18,6 +18,6 @@ interface OpenWeatherApi {
     fun getForecastInfo(
         @Query("q") q: String?,
         @Query("units") units: String,
-        @Query("appied") appid: String
-    ) : Single<ForecastWeatherInfoResponse>
+        @Query("appid") appid: String
+    ) : Single<ForecastApiResponse>
 }

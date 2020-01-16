@@ -1,5 +1,6 @@
 package com.example.openweather.di.modules
 
+import com.example.domain.repository.ForecastWeatherInfoRepository
 import com.example.domain.repository.WeatherInfoRepository
 import com.example.openweather.ui.mvvm.weatherForecast.ForecastViewModelFactory
 import com.example.openweather.ui.mvvm.weatherInfo.WeatherInfoViewModelFactory
@@ -16,5 +17,6 @@ class ViewModelModule {
 
     @Provides
     @Singleton
-    fun provideForecastViewModelFactory(): ForecastViewModelFactory = ForecastViewModelFactory()
+    fun provideForecastViewModelFactory(forecastWeatherInfoRepository: ForecastWeatherInfoRepository): ForecastViewModelFactory =
+        ForecastViewModelFactory(forecastWeatherInfoRepository)
 }

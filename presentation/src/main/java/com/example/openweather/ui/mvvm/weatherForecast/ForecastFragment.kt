@@ -5,10 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.openweather.R
 import com.example.openweather.app.App
+import com.example.openweather.ui.mvvm.weatherForecast.forecastAdapter.ForecastViewModelAdapter
+import kotlinx.android.synthetic.main.forecast_fragment.*
 import javax.inject.Inject
 
 class ForecastFragment : Fragment() {
@@ -29,6 +34,49 @@ class ForecastFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.forecast_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (savedInstanceState == null) {
+            getWeatherInfo()
+        }
+
+        swipe_to_refresh_forecast.setOnRefreshListener {
+            refreshWeatherInfo()
+        }
+
+
+        viewModel.weatherForecastInfo.observe(viewLifecycleOwner, Observer { forecastList ->
+            forecast_list_recyclerview.also {
+                it.layoutManager = LinearLayoutManager(requireContext())
+                it.setHasFixedSize(true)
+                it.adapter = ForecastViewModelAdapter(forecastList)
+            }
+        })
+    }
+
+    private fun getWeatherInfo() {
+        swipe_to_refresh_forecast.isRefreshing = true
+
+        viewModel.getForecastWeatherInfo(
+            {
+                swipe_to_refresh_forecast.isRefreshing = false
+            },
+            {
+                swipe_to_refresh_forecast.isRefreshing = false
+                Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show()
+            })
+    }
+
+    private fun refreshWeatherInfo() {
+        viewModel.getForecastWeatherInfo({
+            swipe_to_refresh_forecast.isRefreshing = false
+        }, {
+            Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show()
+            swipe_to_refresh_forecast.isRefreshing = false
+        })
     }
 
     companion object {

@@ -1,6 +1,6 @@
 package com.example.domain.entity.forecastWeatherInfo
 
-data class ForecastList (
+data class WeatherForecast (
     val dt: Long,
     val main: String,
     val icon: String,

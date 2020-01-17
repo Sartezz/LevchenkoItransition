@@ -54,7 +54,7 @@ class ForecastFragment : Fragment() {
         }
 
         viewModel.weatherForecastInfo.observe(viewLifecycleOwner, Observer { forecastList ->
-            adapter.setForecastList(forecastList)
+            adapter.submitList(forecastList)
         })
     }
 

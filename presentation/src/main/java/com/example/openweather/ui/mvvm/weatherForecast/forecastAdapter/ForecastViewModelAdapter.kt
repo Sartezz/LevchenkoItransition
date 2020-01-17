@@ -3,14 +3,15 @@ package com.example.openweather.ui.mvvm.weatherForecast.forecastAdapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.entity.forecastWeatherInfo.WeatherForecast
 import com.example.openweather.R
 import com.example.openweather.databinding.WeatherItemBinding
 
 class ForecastViewModelAdapter :
-    RecyclerView.Adapter<ForecastViewModelAdapter.ForecastViewHolder>() {
-    private lateinit var forecastList: List<WeatherForecast>
+    ListAdapter<WeatherForecast, ForecastViewModelAdapter.ForecastViewHolder>
+        (ForecastWeatherDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder =
         ForecastViewHolder(
@@ -22,13 +23,8 @@ class ForecastViewModelAdapter :
             )
         )
 
-    override fun getItemCount(): Int = forecastList.size
-
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
-        holder.forecastBinding.weatherForecast = forecastList[position]
-    }
-    fun setForecastList(forecastList: List<WeatherForecast>) {
-        this.forecastList = forecastList
+        holder.forecastBinding.weatherForecast = getItem(position)
     }
 
     inner class ForecastViewHolder(val forecastBinding: WeatherItemBinding) :

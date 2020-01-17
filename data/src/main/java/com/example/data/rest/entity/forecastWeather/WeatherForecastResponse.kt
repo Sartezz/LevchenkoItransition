@@ -1,5 +1,7 @@
 package com.example.data.rest.entity.forecastWeather
 
+import com.google.gson.annotations.SerializedName
+
 data class WeatherForecastResponse(
     val dt: Long,
     val main: MainResponse,
@@ -7,5 +9,6 @@ data class WeatherForecastResponse(
     val clouds: CloudsResponse,
     val wind: WindResponse,
     val sys: SysResponse,
-    val dt_txt: String
+    @SerializedName("dt_txt")
+    val dtTxt: String
 )

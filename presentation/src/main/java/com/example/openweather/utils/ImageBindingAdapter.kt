@@ -1,4 +1,4 @@
-package com.example.openweather.ui.mvvm.weatherForecast
+package com.example.openweather.utils
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

@@ -1,5 +1,8 @@
 package com.example.data.rest.entity.forecastWeather
 
+import com.google.gson.annotations.SerializedName
+
 data class CloudsResponse(
-    val all: Int
+    @SerializedName("all")
+    val cloudDensity: Int
 )

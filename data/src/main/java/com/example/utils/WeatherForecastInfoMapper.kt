@@ -5,13 +5,13 @@ import com.example.domain.entity.forecastWeatherInfo.WeatherForecast
 
 fun WeatherForecastResponse.transformToWeatherForecast() = WeatherForecast(
     dt,
-    weather[0].main,
-    weather[0].icon,
+    weather.firstOrNull()?.main ?: "",
+    weather.firstOrNull()?.icon ?: "",
     main.temp,
-    main.temp_min,
-    main.temp_max,
+    main.tempMin,
+    main.tempMax,
     wind.speed,
     wind.deg,
     main.humidity,
-    main.feels_like
+    main.feelsLike
 )

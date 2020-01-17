@@ -11,7 +11,7 @@
     <string name="sunrise_text">Восход</string>
     <string name="sunset_text">Закат</string>
     <string name="error_text">Error</string>
-    <string name="Minsk">Minsk</string>
+    <string name="minsk">Minsk</string>
     <string name="weather_description">Visual Weather Description</string>
     <string name="forecast">Forecast</string>
     <string name="today">Today</string>

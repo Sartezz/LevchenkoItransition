@@ -10,7 +10,7 @@ import com.example.openweather.R
 import com.example.openweather.databinding.WeatherItemBinding
 
 class ForecastViewModelAdapter :
-    ListAdapter<WeatherForecast, ForecastViewModelAdapter.ForecastViewHolder>
+    ListAdapter<WeatherForecast, ForecastViewHolder>
         (ForecastWeatherDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder =
@@ -26,7 +26,4 @@ class ForecastViewModelAdapter :
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
         holder.forecastBinding.weatherForecast = getItem(position)
     }
-
-    inner class ForecastViewHolder(val forecastBinding: WeatherItemBinding) :
-        RecyclerView.ViewHolder(forecastBinding.root)
 }

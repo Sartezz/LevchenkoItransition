@@ -1,6 +1,5 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.rest.api.OpenWeatherApi
 import com.example.domain.entity.forecastWeatherInfo.WeatherForecast
 import com.example.domain.repository.ForecastWeatherInfoRepository
@@ -16,7 +15,7 @@ class ForecastWeatherInfoRepositoryImpl @Inject constructor(private val weatherA
         key: String
     ): Single<List<WeatherForecast>> {
         return weatherApi.getForecastInfo(cityName, units, key).map { apiResponse ->
-            apiResponse.list.map{
+            apiResponse.weatherForecastResponseItem.map{
                 it.transformToWeatherForecast()
             }
         }

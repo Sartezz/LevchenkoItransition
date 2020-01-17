@@ -1,13 +1,21 @@
 package com.example.data.rest.entity.forecastWeather
 
+import com.google.gson.annotations.SerializedName
+
 data class MainResponse(
     val temp: Double,
-    val feels_like: Double,
-    val temp_min: Double,
-    val temp_max: Double,
+    @SerializedName("feels_like")
+    val feelsLike: Double,
+    @SerializedName("temp_min")
+    val tempMin: Double,
+    @SerializedName("temp_max")
+    val tempMax: Double,
     val pressure: Int,
-    val sea_level: Int,
-    val grnd_level: Int,
+    @SerializedName("sea_level")
+    val seaLevel: Int,
+    @SerializedName("grnd_level")
+    val grndLevel: Int,
     val humidity: Int,
-    val temp_kf: Double
+    @SerializedName("temp_kf")
+    val tempKf: Double
 )

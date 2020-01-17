@@ -17,7 +17,7 @@
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_to_refresh_weatherInfo"
+        android:id="@+id/swipe_to_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -74,14 +74,14 @@
 
                 <ImageView
                     android:id="@+id/weather_icon"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/icon_dimen"
+                    android:layout_height="@dimen/icon_dimen"
                     android:layout_marginStart="@dimen/margin_twenty"
                     android:contentDescription="@string/weather_description"
                     android:src="@mipmap/ic_launcher"
-                    app:imageUrl="@{viewModel.weatherInfo.icon}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/currentTime" />
+                    app:layout_constraintTop_toTopOf="@+id/currentTime"
+                    app:weatherIcon="@{viewModel.weatherInfo.icon}" />
 
                 <TextView
                     android:id="@+id/temperature"

@@ -48,7 +48,7 @@ class WeatherInfoFragment : Fragment() {
             fragment_view.visibility = View.VISIBLE
         }
 
-        swipe_to_refresh_weatherInfo.setOnRefreshListener {
+        swipe_to_refresh.setOnRefreshListener {
             refreshWeatherInfo()
         }
 
@@ -56,14 +56,14 @@ class WeatherInfoFragment : Fragment() {
     }
 
     private fun getWeatherInfo() {
-        swipe_to_refresh_weatherInfo.isRefreshing = true
+        swipe_to_refresh.isRefreshing = true
         viewModel.getWeatherInfo(
             {
                 fragment_view.visibility = View.VISIBLE
-                swipe_to_refresh_weatherInfo.isRefreshing = false
+                swipe_to_refresh.isRefreshing = false
             },
             {
-                swipe_to_refresh_weatherInfo.isRefreshing = false
+                swipe_to_refresh.isRefreshing = false
                 Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show()
             })
     }
@@ -71,10 +71,10 @@ class WeatherInfoFragment : Fragment() {
     private fun refreshWeatherInfo() {
         viewModel.getWeatherInfo({
             fragment_view.visibility = View.VISIBLE
-            swipe_to_refresh_weatherInfo.isRefreshing = false
+            swipe_to_refresh.isRefreshing = false
         }, {
             Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show()
-            swipe_to_refresh_weatherInfo.isRefreshing = false
+            swipe_to_refresh.isRefreshing = false
         })
     }
 

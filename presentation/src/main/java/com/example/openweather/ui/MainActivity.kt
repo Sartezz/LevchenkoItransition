@@ -1,13 +1,15 @@
 package com.example.openweather.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.openweather.R
 import com.example.openweather.ui.mvvm.weatherForecast.ForecastFragment
 import com.example.openweather.ui.mvvm.weatherInfo.WeatherInfoFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+
+const val WEATHER_INFO_FRAGMENT_TAG = "weatherInfoFragment"
+const val WEATHER_FORECAST_FRAGMENT_TAG = "weatherForecastFragment"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var weatherInfoFragment: WeatherInfoFragment
@@ -39,26 +41,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         weatherInfoFragment =
-            when (supportFragmentManager.findFragmentByTag("weatherInfoFragment") != null) {
-                true -> supportFragmentManager.findFragmentByTag("weatherInfoFragment") as WeatherInfoFragment
-                false -> WeatherInfoFragment.newInstance(resources.getString(R.string.Minsk))
-            }
+            supportFragmentManager.findFragmentByTag(WEATHER_INFO_FRAGMENT_TAG)?.let {
+                it as WeatherInfoFragment
+            } ?: WeatherInfoFragment.newInstance(resources.getString(R.string.minsk))
 
         forecastFragment =
-            when (supportFragmentManager.findFragmentByTag("weatherForecastFragment") != null) {
-                true -> supportFragmentManager.findFragmentByTag("weatherForecastFragment") as ForecastFragment
-                false -> ForecastFragment.newInstance()
-            }
+            supportFragmentManager.findFragmentByTag(WEATHER_FORECAST_FRAGMENT_TAG)?.let {
+                it as ForecastFragment
+            } ?: ForecastFragment.newInstance()
 
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_holder, weatherInfoFragment, "weatherInfoFragment")
+                .add(R.id.fragment_holder, weatherInfoFragment, WEATHER_INFO_FRAGMENT_TAG)
                 .commit()
 
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_holder, forecastFragment, "weatherForecastFragment")
+                .add(R.id.fragment_holder, forecastFragment, WEATHER_FORECAST_FRAGMENT_TAG)
                 .hide(forecastFragment)
                 .commit()
         }

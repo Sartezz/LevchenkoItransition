@@ -35,9 +35,12 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<ForecastViewHolder>() {
         holder.forecastBinding.weatherForecast = forecastList[position]
     }
 
-    fun setForecastList(forecastList: List<WeatherForecast>) {
-        private val forecastWeatherDiffUtilCallback: ForecastWeatherDiffUtilCallback =
-            ForecastWeatherDiffUtilCallback()
+    fun setForecastList(newForecastList: List<WeatherForecast>) {
+        val forecastWeatherDiffUtilCallback =
+            ForecastWeatherDiffUtilCallback(newForecastList, forecastList)
+        val diffUtilResult = DiffUtil.calculateDiff(forecastWeatherDiffUtilCallback)
+        diffUtilResult.dispatchUpdatesTo(this)
+
         this.forecastList.clear()
         this.forecastList.addAll(forecastList)
     }

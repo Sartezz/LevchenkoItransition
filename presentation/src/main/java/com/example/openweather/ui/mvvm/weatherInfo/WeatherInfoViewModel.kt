@@ -1,5 +1,6 @@
 package com.example.openweather.ui.mvvm.weatherInfo
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.entity.weatherInfo.WeatherInfo

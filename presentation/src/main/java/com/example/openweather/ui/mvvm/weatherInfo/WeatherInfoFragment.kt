@@ -70,6 +70,7 @@ class WeatherInfoFragment : Fragment() {
 
     private fun refreshWeatherInfo() {
         viewModel.getWeatherInfo({
+            fragment_view.visibility = View.VISIBLE
             swipe_to_refresh_weatherInfo.isRefreshing = false
         }, {
             Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show()

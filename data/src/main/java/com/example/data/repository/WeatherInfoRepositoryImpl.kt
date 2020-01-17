@@ -8,6 +8,7 @@ import com.example.utils.transformToWeatherInfo
 import com.example.utils.transformToWeatherInfoDb
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class WeatherInfoRepositoryImpl @Inject constructor(
@@ -27,6 +28,8 @@ class WeatherInfoRepositoryImpl @Inject constructor(
             .doOnSuccess {
                 Completable.fromAction { weatherInfoDao.deleteWeatherInfo() }
                     .andThen(weatherInfoDao.addWeatherInfo(it.transformToWeatherInfoDb()))
+                    .subscribeOn(Schedulers.io())
+                    .subscribe()
             }
             .onErrorResumeNext(weatherInfoDao.getWeatherInfo().map {
                 it.transformToWeatherInfo()

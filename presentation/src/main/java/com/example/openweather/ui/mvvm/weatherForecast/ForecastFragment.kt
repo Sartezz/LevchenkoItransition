@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.forecast_fragment.*
 import javax.inject.Inject
 
 class ForecastFragment : Fragment() {
+    private val adapter: ForecastViewModelAdapter = ForecastViewModelAdapter()
     @Inject
     lateinit var forecastViewModelFactory: ForecastViewModelFactory
     private lateinit var viewModel: ForecastViewModel
@@ -47,13 +48,14 @@ class ForecastFragment : Fragment() {
             refreshWeatherInfo()
         }
 
+        forecast_list_recyclerview.also {
+            it.layoutManager = LinearLayoutManager(requireContext())
+            it.setHasFixedSize(true)
+            it.adapter = adapter
+        }
 
         viewModel.weatherForecastInfo.observe(viewLifecycleOwner, Observer { forecastList ->
-            forecast_list_recyclerview.also {
-                it.layoutManager = LinearLayoutManager(requireContext())
-                it.setHasFixedSize(true)
-                it.adapter = ForecastViewModelAdapter(forecastList)
-            }
+            adapter.setForecastList(forecastList)
         })
     }
 

@@ -38,19 +38,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null) {
-            weatherInfoFragment =
-                WeatherInfoFragment.newInstance(resources.getString(R.string.Minsk))
-            forecastFragment = ForecastFragment.newInstance()
+        weatherInfoFragment =
+            when (supportFragmentManager.findFragmentByTag("weatherInfoFragment") != null) {
+                true -> supportFragmentManager.findFragmentByTag("weatherInfoFragment") as WeatherInfoFragment
+                false -> WeatherInfoFragment.newInstance(resources.getString(R.string.Minsk))
+            }
 
+        forecastFragment =
+            when (supportFragmentManager.findFragmentByTag("weatherForecastFragment") != null) {
+                true -> supportFragmentManager.findFragmentByTag("weatherForecastFragment") as ForecastFragment
+                false -> ForecastFragment.newInstance()
+            }
+
+        if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_holder, weatherInfoFragment)
+                .add(R.id.fragment_holder, weatherInfoFragment, "weatherInfoFragment")
                 .commit()
 
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_holder, forecastFragment)
+                .add(R.id.fragment_holder, forecastFragment, "weatherForecastFragment")
                 .hide(forecastFragment)
                 .commit()
         }

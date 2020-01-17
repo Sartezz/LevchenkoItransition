@@ -8,8 +8,10 @@ import com.example.domain.entity.forecastWeatherInfo.WeatherForecast
 import com.example.openweather.R
 import com.example.openweather.databinding.WeatherItemBinding
 
-class ForecastViewModelAdapter(private val forecastList: List<WeatherForecast>) :
+class ForecastViewModelAdapter :
     RecyclerView.Adapter<ForecastViewModelAdapter.ForecastViewHolder>() {
+    private lateinit var forecastList: List<WeatherForecast>
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder =
         ForecastViewHolder(
             DataBindingUtil.inflate(
@@ -24,6 +26,9 @@ class ForecastViewModelAdapter(private val forecastList: List<WeatherForecast>) 
 
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
         holder.forecastBinding.weatherForecast = forecastList[position]
+    }
+    fun setForecastList(forecastList: List<WeatherForecast>) {
+        this.forecastList = forecastList
     }
 
     inner class ForecastViewHolder(val forecastBinding: WeatherItemBinding) :

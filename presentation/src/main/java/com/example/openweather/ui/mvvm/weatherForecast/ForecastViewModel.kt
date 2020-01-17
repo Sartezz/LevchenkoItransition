@@ -26,7 +26,6 @@ class ForecastViewModel(private val forecastWeatherInfoRepository: ForecastWeath
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        Log.d("aaa", it.toString())
                         weatherForecastInfo.value = it
                         onSuccess()
                     },

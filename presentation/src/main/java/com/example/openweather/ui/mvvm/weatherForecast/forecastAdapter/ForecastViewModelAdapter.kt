@@ -4,16 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.entity.forecastWeatherInfo.WeatherForecast
 import com.example.openweather.R
-import com.example.openweather.databinding.WeatherItemBinding
 
 class ForecastViewModelAdapter : RecyclerView.Adapter<ForecastViewHolder>() {
-    lateinit var forecastWeatherDiffUtilCallback: ForecastWeatherDiffUtilCallback
-    lateinit var diffUtilResult: DiffUtil.DiffResult
-    private lateinit var forecastList: MutableList<WeatherForecast>
+    private val forecastList: MutableList<WeatherForecast> = ArrayList()
     override fun getItemCount(): Int = forecastList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder =
@@ -26,31 +22,17 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<ForecastViewHolder>() {
             )
         )
 
-
-    fun getForecastList(): List<WeatherForecast> {
-        return forecastList
-    }
-
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
         holder.forecastBinding.weatherForecast = forecastList[position]
     }
 
     fun setForecastList(newForecastList: List<WeatherForecast>) {
-        val forecastWeatherDiffUtilCallback =
-            ForecastWeatherDiffUtilCallback(newForecastList, forecastList)
-        val diffUtilResult = DiffUtil.calculateDiff(forecastWeatherDiffUtilCallback)
+        val diffUtilResult =
+            DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(newForecastList, forecastList))
         diffUtilResult.dispatchUpdatesTo(this)
 
         this.forecastList.clear()
-        this.forecastList.addAll(forecastList)
+        this.forecastList.addAll(newForecastList)
+
     }
 }
-
-lateinit var forecastWeatherDiffUtilCallback: ForecastWeatherDiffUtilCallback
-lateinit var diffUtilResult: DiffUtil.DiffResult
-
-forecastWeatherDiffUtilCallback =
-ForecastWeatherDiffUtilCallback(adapter.getForecastList(), forecastList)
-diffUtilResult = DiffUtil.calculateDiff(forecastWeatherDiffUtilCallback)
-adapter.setForecastList(forecastList)
-diffUtilResult.dispatchUpdatesTo(adapter)

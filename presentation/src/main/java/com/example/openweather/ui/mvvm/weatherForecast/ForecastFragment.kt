@@ -8,13 +8,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.openweather.R
 import com.example.openweather.app.App
 import com.example.openweather.ui.mvvm.weatherForecast.forecastAdapter.ForecastViewModelAdapter
-import com.example.openweather.ui.mvvm.weatherForecast.forecastAdapter.ForecastWeatherDiffUtilCallback
 import kotlinx.android.synthetic.main.forecast_fragment.*
 import javax.inject.Inject
 

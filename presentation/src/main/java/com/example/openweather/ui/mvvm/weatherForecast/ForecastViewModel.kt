@@ -16,7 +16,6 @@ class ForecastViewModel(private val forecastWeatherInfoRepository: ForecastWeath
     ViewModel() {
     private val disposableList = CompositeDisposable()
     var weatherForecastInfo: MutableLiveData<List<ForecastData>> = MutableLiveData()
-    private val weatherData: MutableList<ForecastData> = ArrayList()
 
     fun getForecastWeatherInfo(onSuccess: () -> Unit, onError: () -> Unit) {
         disposableList.add(
@@ -29,6 +28,7 @@ class ForecastViewModel(private val forecastWeatherInfoRepository: ForecastWeath
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
+                        val weatherData:MutableList<ForecastData> = ArrayList()
                         weatherData.add(ForecastDayInfo(it[0].dt))
                         weatherData.add(it[0])
                         for (index in 0 until it.lastIndex) {

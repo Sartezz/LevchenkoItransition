@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.openweather.R
 import com.example.openweather.app.App
 import com.example.openweather.databinding.WeatherInfoFragmentBinding
@@ -18,6 +19,7 @@ class WeatherInfoFragment : Fragment() {
     @Inject
     lateinit var weatherInfoViewModelFactory: WeatherInfoViewModelFactory
     private lateinit var viewModel: WeatherInfoViewModel
+    private lateinit var swipeToRefresh: SwipeRefreshLayout
     private lateinit var binding: WeatherInfoFragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +43,7 @@ class WeatherInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipeToRefresh = swipe_to_refresh
 
         if (savedInstanceState == null) {
             getWeatherInfo()
@@ -48,7 +51,7 @@ class WeatherInfoFragment : Fragment() {
             fragment_view.visibility = View.VISIBLE
         }
 
-        swipe_to_refresh.setOnRefreshListener {
+        swipeToRefresh.setOnRefreshListener {
             refreshWeatherInfo()
         }
 
@@ -56,14 +59,14 @@ class WeatherInfoFragment : Fragment() {
     }
 
     private fun getWeatherInfo() {
-        swipe_to_refresh.isRefreshing = true
+        swipeToRefresh.isRefreshing = true
         viewModel.getWeatherInfo(
             {
                 fragment_view.visibility = View.VISIBLE
-                swipe_to_refresh.isRefreshing = false
+                swipeToRefresh.isRefreshing = false
             },
             {
-                swipe_to_refresh.isRefreshing = false
+                swipeToRefresh.isRefreshing = false
                 Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show()
             })
     }
@@ -71,10 +74,10 @@ class WeatherInfoFragment : Fragment() {
     private fun refreshWeatherInfo() {
         viewModel.getWeatherInfo({
             fragment_view.visibility = View.VISIBLE
-            swipe_to_refresh.isRefreshing = false
+            swipeToRefresh.isRefreshing = false
         }, {
             Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show()
-            swipe_to_refresh.isRefreshing = false
+            swipeToRefresh.isRefreshing = false
         })
     }
 

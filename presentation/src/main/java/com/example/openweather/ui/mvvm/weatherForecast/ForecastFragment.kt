@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.openweather.R
 import com.example.openweather.app.App
 import com.example.openweather.ui.mvvm.weatherForecast.forecastAdapter.ForecastViewModelAdapter
@@ -19,6 +20,7 @@ class ForecastFragment : Fragment() {
     private val adapter: ForecastViewModelAdapter = ForecastViewModelAdapter()
     @Inject
     lateinit var forecastViewModelFactory: ForecastViewModelFactory
+    private lateinit var swipeToRefresh: SwipeRefreshLayout
     private lateinit var viewModel: ForecastViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,12 +40,13 @@ class ForecastFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipeToRefresh = swipe_to_refresh
 
         if (savedInstanceState == null) {
             getWeatherInfo()
         }
 
-        swipe_to_refresh.setOnRefreshListener {
+        swipeToRefresh.setOnRefreshListener {
             refreshWeatherInfo()
         }
 
@@ -64,24 +67,24 @@ class ForecastFragment : Fragment() {
     }
 
     private fun getWeatherInfo() {
-        swipe_to_refresh.isRefreshing = true
+        swipeToRefresh.isRefreshing = true
 
         viewModel.getForecastWeatherInfo(
             {
-                swipe_to_refresh.isRefreshing = false
+                swipeToRefresh.isRefreshing = false
             },
             {
-                swipe_to_refresh.isRefreshing = false
+                swipeToRefresh.isRefreshing = false
                 Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show()
             })
     }
 
     private fun refreshWeatherInfo() {
         viewModel.getForecastWeatherInfo({
-            swipe_to_refresh.isRefreshing = false
+            swipeToRefresh.isRefreshing = false
         }, {
             Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show()
-            swipe_to_refresh.isRefreshing = false
+            swipeToRefresh.isRefreshing = false
         })
     }
 

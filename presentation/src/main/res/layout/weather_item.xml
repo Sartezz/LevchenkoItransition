@@ -23,13 +23,13 @@
             android:id="@+id/day_of_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{DateUtils.formatToFullDate(weatherForecast.dt)}"
+            android:text="@{DateUtils.formatToTime(weatherForecast.dt)}"
             android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/weather_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Понедельник" />
+            tools:text="03:00" />
 
         <ImageView
             android:id="@+id/weather_icon"
@@ -38,6 +38,7 @@
             android:contentDescription="@string/weather_description"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:weatherIcon="@{weatherForecast.icon}" />

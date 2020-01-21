@@ -11,4 +11,4 @@ data class WeatherForecast (
     val windDeg: Int,
     val humidity: Int,
     val feelsLike: Double
-)
+) : ForecastData

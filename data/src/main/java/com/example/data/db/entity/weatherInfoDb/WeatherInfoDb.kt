@@ -1,10 +1,10 @@
-package com.example.data.db.entity
+package com.example.data.db.entity.weatherInfoDb
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.utils.DATABASE
+import com.example.utils.WEATHER_INFO_DATABASE
 
-@Entity(tableName = DATABASE)
+@Entity(tableName = WEATHER_INFO_DATABASE)
 data class WeatherInfoDb(
     @PrimaryKey(autoGenerate = true)
     val id: Int?,

@@ -28,27 +28,29 @@ class ForecastViewModel(private val forecastWeatherInfoRepository: ForecastWeath
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        val weatherData:MutableList<ForecastData> = ArrayList()
-                        weatherData.add(ForecastDayInfo(it[0].dt))
-                        weatherData.add(it[0])
-                        for (index in 0 until it.lastIndex) {
-                            if ((DateFormat.format(
-                                    "dd",
-                                    it[index + 1].dt * DateUtils.SECOND_IN_MILLIS
-                                ))
-                                == DateFormat.format(
-                                    "dd",
-                                    it[index].dt * DateUtils.SECOND_IN_MILLIS
-                                )
-                            ) {
-                                weatherData.add(it[index + 1])
-                            } else {
-                                weatherData.add(ForecastDayInfo(it[index + 1].dt))
-                                weatherData.add(it[index + 1])
+                        if (it.isNotEmpty()) {
+                            val weatherData: MutableList<ForecastData> = ArrayList()
+                            weatherData.add(ForecastDayInfo(it[0].dt))
+                            weatherData.add(it[0])
+                            for (index in 0 until it.lastIndex) {
+                                if ((DateFormat.format(
+                                        "dd",
+                                        it[index + 1].dt * DateUtils.SECOND_IN_MILLIS
+                                    ))
+                                    == DateFormat.format(
+                                        "dd",
+                                        it[index].dt * DateUtils.SECOND_IN_MILLIS
+                                    )
+                                ) {
+                                    weatherData.add(it[index + 1])
+                                } else {
+                                    weatherData.add(ForecastDayInfo(it[index + 1].dt))
+                                    weatherData.add(it[index + 1])
+                                }
                             }
-                        }
-                        weatherForecastInfo.value = weatherData
-                        onSuccess()
+                            weatherForecastInfo.value = weatherData
+                            onSuccess()
+                        } else onError()
                     },
                     {
                         onError()

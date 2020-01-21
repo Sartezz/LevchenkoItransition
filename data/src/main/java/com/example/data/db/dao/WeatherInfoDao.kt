@@ -1,10 +1,11 @@
 package com.example.data.db.dao
 
-import androidx.room.*
-import com.example.data.db.entity.WeatherInfoDb
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import com.example.data.db.entity.weatherInfoDb.WeatherInfoDb
 import io.reactivex.Completable
 import io.reactivex.Maybe
-import io.reactivex.Observable
 
 @Dao
 interface WeatherInfoDao {

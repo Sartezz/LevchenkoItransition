@@ -1,6 +1,6 @@
 package com.example.utils
 
-import com.example.data.db.entity.WeatherInfoDb
+import com.example.data.db.entity.weatherInfoDb.WeatherInfoDb
 import com.example.data.rest.entity.currentWeather.WeatherInfoResponse
 import com.example.domain.entity.weatherInfo.WeatherInfo
 

@@ -13,7 +13,7 @@ object DateUtils {
 
     @JvmStatic
     fun formatToTime(date: Long): String {
-        return SimpleDateFormat("hh:mm").format(date * DateUtils.SECOND_IN_MILLIS)
+        return SimpleDateFormat("HH:mm").format(date * DateUtils.SECOND_IN_MILLIS)
     }
 
     @JvmStatic

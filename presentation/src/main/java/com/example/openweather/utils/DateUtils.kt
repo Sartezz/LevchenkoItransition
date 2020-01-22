@@ -1,8 +1,8 @@
 package com.example.openweather.utils
 
 import java.text.DateFormat
-import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
+import java.util.*
 
 object DateUtils {
     @JvmStatic
@@ -12,33 +12,14 @@ object DateUtils {
 
     @JvmStatic
     fun formatToTime(date: Long): String {
-        return SimpleDateFormat("HH:mm").format(date)
+        return SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)
     }
 
     @JvmStatic
     fun myFormatToTime(date: Long): String {
         return SimpleDateFormat(
             "dd MMMM",
-            myDateFormatSymbols
+            Locale.getDefault()
         ).format(date)
-    }
-
-    private val myDateFormatSymbols = object : DateFormatSymbols() {
-        override fun getMonths(): Array<String> {
-            return arrayOf(
-                "января",
-                "февраля",
-                "марта",
-                "апреля",
-                "мая",
-                "июня",
-                "июля",
-                "августа",
-                "сентября",
-                "октября",
-                "ноября",
-                "декабря"
-            )
-        }
     }
 }

@@ -51,7 +51,7 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
     fun setForecastList(newForecastList: List<ForecastData>) {
         val diffUtilResult =
-            DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(newForecastList, forecastList))
+            DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(forecastList, newForecastList))
         diffUtilResult.dispatchUpdatesTo(this)
 
         forecastList.clear()

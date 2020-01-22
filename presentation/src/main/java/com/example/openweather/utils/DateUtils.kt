@@ -1,6 +1,5 @@
 package com.example.openweather.utils
 
-import android.text.format.DateUtils
 import java.text.DateFormat
 import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
@@ -8,12 +7,12 @@ import java.text.SimpleDateFormat
 object DateUtils {
     @JvmStatic
     fun formatToFullDate(date: Long): String {
-        return DateFormat.getDateInstance().format(date * DateUtils.SECOND_IN_MILLIS)
+        return DateFormat.getDateInstance().format(date)
     }
 
     @JvmStatic
     fun formatToTime(date: Long): String {
-        return SimpleDateFormat("HH:mm").format(date * DateUtils.SECOND_IN_MILLIS)
+        return SimpleDateFormat("HH:mm").format(date)
     }
 
     @JvmStatic
@@ -21,7 +20,7 @@ object DateUtils {
         return SimpleDateFormat(
             "dd MMMM",
             myDateFormatSymbols
-        ).format(date * DateUtils.SECOND_IN_MILLIS)
+        ).format(date)
     }
 
     private val myDateFormatSymbols = object : DateFormatSymbols() {

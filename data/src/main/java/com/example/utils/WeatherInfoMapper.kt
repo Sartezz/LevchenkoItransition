@@ -1,12 +1,13 @@
 package com.example.utils
 
+import android.text.format.DateUtils
 import com.example.data.db.entity.weatherInfoDb.WeatherInfoDb
 import com.example.data.rest.entity.currentWeather.WeatherInfoResponse
 import com.example.domain.entity.weatherInfo.WeatherInfo
 
 fun WeatherInfoResponse.transformToWeatherInfo() = WeatherInfo(
     name,
-    dt,
+    dt * DateUtils.SECOND_IN_MILLIS,
     weather.firstOrNull()?.main ?: "",
     weather.firstOrNull()?.icon ?: "",
     main.temp,
@@ -14,8 +15,8 @@ fun WeatherInfoResponse.transformToWeatherInfo() = WeatherInfo(
     main.tempMax,
     wind.speed,
     wind.deg,
-    sys.sunrise,
-    sys.sunset,
+    sys.sunrise * DateUtils.SECOND_IN_MILLIS,
+    sys.sunset * DateUtils.SECOND_IN_MILLIS,
     main.humidity,
     main.feelsLike
 )

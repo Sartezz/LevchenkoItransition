@@ -1,11 +1,11 @@
 package com.example.openweather.ui.mvvm.weatherForecast
 
 import android.text.format.DateFormat
-import android.text.format.DateUtils
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.entity.forecastWeatherInfo.ForecastData
 import com.example.domain.entity.forecastWeatherInfo.ForecastDayInfo
+import com.example.domain.entity.forecastWeatherInfo.WeatherForecast
 import com.example.domain.repository.ForecastWeatherInfoRepository
 import com.example.openweather.BuildConfig
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,26 +29,7 @@ class ForecastViewModel(private val forecastWeatherInfoRepository: ForecastWeath
                 .subscribe(
                     {
                         if (it.isNotEmpty()) {
-                            val weatherData: MutableList<ForecastData> = ArrayList()
-                            weatherData.add(ForecastDayInfo(it[0].dt))
-                            weatherData.add(it[0])
-                            for (index in 0 until it.lastIndex) {
-                                if ((DateFormat.format(
-                                        "dd",
-                                        it[index + 1].dt * DateUtils.SECOND_IN_MILLIS
-                                    ))
-                                    == DateFormat.format(
-                                        "dd",
-                                        it[index].dt * DateUtils.SECOND_IN_MILLIS
-                                    )
-                                ) {
-                                    weatherData.add(it[index + 1])
-                                } else {
-                                    weatherData.add(ForecastDayInfo(it[index + 1].dt))
-                                    weatherData.add(it[index + 1])
-                                }
-                            }
-                            weatherForecastInfo.value = weatherData
+                            createForecastDataList(it)
                             onSuccess()
                         } else onError()
                     },
@@ -57,6 +38,26 @@ class ForecastViewModel(private val forecastWeatherInfoRepository: ForecastWeath
                     }
                 )
         )
+    }
+
+    private fun createForecastDataList(list: List<WeatherForecast>) {
+        val weatherData: MutableList<ForecastData> = ArrayList()
+        weatherData.add(ForecastDayInfo(list[0].dt))
+        weatherData.add(list[0])
+        for (index in 0 until list.lastIndex) {
+            if ((DateFormat.format(
+                    "dd",
+                    list[index + 1].dt
+                ))
+                != DateFormat.format(
+                    "dd",
+                    list[index].dt
+                )
+            ) weatherData.add(ForecastDayInfo(list[index + 1].dt))
+
+            weatherData.add(list[index + 1])
+        }
+        weatherForecastInfo.value = weatherData
     }
 
     override fun onCleared() {

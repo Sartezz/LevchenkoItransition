@@ -15,6 +15,6 @@ interface WeatherInfoDao {
     @Query("SELECT * FROM weatherInfo")
     fun getWeatherInfo(): Maybe<WeatherInfoDb>
 
-    @Query("DELETE FROM weatherInfo where id NOT IN (SELECT id from weatherInfo ORDER BY id DESC LIMIT 1)")
+    @Query("DELETE FROM weatherInfo")
     fun deleteWeatherInfo()
 }

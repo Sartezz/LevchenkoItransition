@@ -26,13 +26,17 @@ class WeatherInfoRepositoryImpl @Inject constructor(
                 it.transformToWeatherInfo()
             }
             .doOnSuccess {
-                Completable.fromAction { weatherInfoDao.deleteWeatherInfo() }
-                    .andThen(weatherInfoDao.addWeatherInfo(it.transformToWeatherInfoDb()))
-                    .subscribeOn(Schedulers.io())
-                    .subscribe()
+                processWeatherInfo(it)
             }
             .onErrorResumeNext(weatherInfoDao.getWeatherInfo().map {
                 it.transformToWeatherInfo()
             }.toSingle())
+    }
+
+    private fun processWeatherInfo(info: WeatherInfo) {
+        Completable.fromAction { weatherInfoDao.deleteWeatherInfo() }
+            .andThen(weatherInfoDao.addWeatherInfo(info.transformToWeatherInfoDb()))
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 }

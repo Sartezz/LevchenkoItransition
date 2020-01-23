@@ -12,7 +12,8 @@ import com.example.openweather.R
 import com.example.utils.TYPE_DATE
 import com.example.utils.TYPE_INFO
 
-class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    ForecastClickListener {
     private val forecastList: MutableList<ForecastData> = ArrayList()
 
     override fun getItemCount(): Int = forecastList.size
@@ -33,18 +34,31 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                     R.layout.weather_date_item,
                     parent,
                     false
-                )
+                ), this
             )
             else -> throw IllegalArgumentException()
         }
+    }
+
+    override fun onForecastClicked(data: ForecastDayInfo, position: Int) {
+        val newForecastList: MutableList<ForecastData> = ArrayList()
+        newForecastList.addAll(forecastList)
+        if (!data.isExpanded) {
+            newForecastList.addAll(position + 1, data.list)
+        } else {
+            newForecastList.removeAll(data.list)
+        }
+        data.isExpanded = !data.isExpanded
+        setForecastList(newForecastList)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ForecastViewHolder -> holder.forecastBinding.weatherForecast =
                 forecastList[position] as WeatherForecast
-            is ForecastDataViewHolder -> holder.weatherDateItemBinding.forecastData =
-                forecastList[position] as ForecastDayInfo
+            is ForecastDataViewHolder -> {
+                holder.bindItem(forecastList[position] as ForecastDayInfo, forecastList)
+            }
             else -> throw IllegalArgumentException()
         }
     }
@@ -53,7 +67,6 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         val diffUtilResult =
             DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(forecastList, newForecastList))
         diffUtilResult.dispatchUpdatesTo(this)
-
         forecastList.clear()
         forecastList.addAll(newForecastList)
     }

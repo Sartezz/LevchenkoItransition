@@ -2,12 +2,11 @@ package com.example.openweather.utils
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.entity.forecastWeatherInfo.ForecastData
-import com.example.openweather.ui.mvvm.weatherForecast.forecastAdapter.ForecastViewModelAdapter
+import com.example.openweather.AdapterInterface
 
 @BindingAdapter("data")
-fun setRecyclerViewProperties(recyclerView: RecyclerView, items: List<ForecastData>?) {
-    if (recyclerView.adapter is ForecastViewModelAdapter) {
-        items?.let { (recyclerView.adapter as ForecastViewModelAdapter).setForecastList(it) }
+fun <T> setRecyclerViewProperties(recyclerView: RecyclerView, items: T?) {
+    if (recyclerView.adapter is AdapterInterface<*>) {
+        items?.let { (recyclerView.adapter as AdapterInterface<T>).setData(items) }
     }
 }

@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.entity.forecastWeatherInfo.ForecastData
 import com.example.domain.entity.forecastWeatherInfo.ForecastDayInfo
 import com.example.domain.entity.forecastWeatherInfo.WeatherForecast
+import com.example.openweather.AdapterInterface
 import com.example.openweather.R
 import com.example.utils.TYPE_DATE
 import com.example.utils.TYPE_INFO
 
 class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
-    ForecastClickListener {
+    ForecastClickListener, AdapterInterface<List<ForecastData>> {
     private val forecastList: MutableList<ForecastData> = ArrayList()
 
     override fun getItemCount(): Int = forecastList.size
@@ -49,7 +50,7 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             newForecastList.removeAll(data.list)
         }
         data.isExpanded = !data.isExpanded
-        setForecastList(newForecastList)
+        setData(newForecastList)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -63,12 +64,12 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         }
     }
 
-    fun setForecastList(newForecastList: List<ForecastData>) {
+    override fun setData(data: List<ForecastData>) {
         val diffUtilResult =
-            DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(forecastList, newForecastList))
+            DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(forecastList, data))
         diffUtilResult.dispatchUpdatesTo(this)
         forecastList.clear()
-        forecastList.addAll(newForecastList)
+        forecastList.addAll(data)
     }
 
     override fun getItemViewType(position: Int): Int {

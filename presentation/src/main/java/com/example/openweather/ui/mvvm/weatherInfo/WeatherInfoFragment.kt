@@ -40,16 +40,12 @@ class WeatherInfoFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fragment_view.visibility = View.INVISIBLE
         swipeToRefresh = swipe_to_refresh
 
-        if (savedInstanceState == null) {
-            getWeatherInfo()
-        } else {
-            fragment_view.visibility = View.VISIBLE
-        }
+        if (savedInstanceState == null) getWeatherInfo()
 
         swipeToRefresh.setOnRefreshListener {
             refreshWeatherInfo()
@@ -59,26 +55,15 @@ class WeatherInfoFragment : Fragment() {
     }
 
     private fun getWeatherInfo() {
-        swipeToRefresh.isRefreshing = true
         viewModel.getWeatherInfo(
-            {
-                fragment_view.visibility = View.VISIBLE
-                swipeToRefresh.isRefreshing = false
-            },
-            {
-                swipeToRefresh.isRefreshing = false
-                Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show()
-            })
+            { },
+            { Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show() })
     }
 
     private fun refreshWeatherInfo() {
-        viewModel.getWeatherInfo({
-            fragment_view.visibility = View.VISIBLE
-            swipeToRefresh.isRefreshing = false
-        }, {
-            Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show()
-            swipeToRefresh.isRefreshing = false
-        })
+        viewModel.getWeatherInfo(
+            { },
+            { Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show() })
     }
 
     companion object {

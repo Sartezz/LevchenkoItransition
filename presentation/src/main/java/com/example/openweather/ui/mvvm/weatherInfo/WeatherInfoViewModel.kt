@@ -1,6 +1,5 @@
 package com.example.openweather.ui.mvvm.weatherInfo
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.entity.weatherInfo.WeatherInfo
@@ -13,8 +12,12 @@ import io.reactivex.schedulers.Schedulers
 class WeatherInfoViewModel(private val weatherInfoRepository: WeatherInfoRepository) : ViewModel() {
     private val disposableList = CompositeDisposable()
     var weatherInfo: MutableLiveData<WeatherInfo> = MutableLiveData()
+    var isVisible: MutableLiveData<Boolean> = MutableLiveData()
+    var isRefreshing: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getWeatherInfo(onSuccess: () -> Unit, onError: () -> Unit) {
+        isVisible.value = false
+        isRefreshing.value = true
         disposableList.add(
             weatherInfoRepository.getWeatherInfo(
                 "Minsk",
@@ -25,9 +28,12 @@ class WeatherInfoViewModel(private val weatherInfoRepository: WeatherInfoReposit
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
+                        isVisible.value = true
+                        isRefreshing.value = false
                         weatherInfo.value = it
                         onSuccess()
                     }, {
+                        isVisible.value = false
                         onError()
                     })
         )

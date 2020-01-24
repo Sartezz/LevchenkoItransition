@@ -12,12 +12,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class ForecastViewModel(private val forecastWeatherInfoRepository: ForecastWeatherInfoRepository) :
-    ViewModel() {
+class ForecastViewModel(
+    private val forecastWeatherInfoRepository: ForecastWeatherInfoRepository
+) : ViewModel() {
     private val disposableList = CompositeDisposable()
+    var isLoading: MutableLiveData<Boolean> = MutableLiveData()
     var weatherForecastInfo: MutableLiveData<List<ForecastData>> = MutableLiveData()
 
     fun getForecastWeatherInfo(onSuccess: () -> Unit, onError: () -> Unit) {
+        isLoading.value = true
         disposableList.add(
             forecastWeatherInfoRepository.getWeatherInfo(
                 "Minsk",
@@ -29,11 +32,15 @@ class ForecastViewModel(private val forecastWeatherInfoRepository: ForecastWeath
                 .subscribe(
                     {
                         if (it.isNotEmpty()) {
+                            isLoading.value = false
                             createForecastDataList(it)
                             onSuccess()
-                        } else onError()
+                        } else {
+                            onError()
+                        }
                     },
                     {
+                        isLoading.value = false
                         onError()
                     }
                 )

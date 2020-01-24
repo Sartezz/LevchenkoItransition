@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.openweather.R
 import com.example.openweather.app.App
@@ -49,11 +51,10 @@ class ForecastFragment : Fragment() {
         forecast_list_recyclerview.also {
             it.setHasFixedSize(true)
             it.adapter = adapter
+            it.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
 
-        if (savedInstanceState == null) {
-            getWeatherInfo()
-        }
+        if (savedInstanceState == null) getWeatherInfo()
 
         swipeToRefresh.setOnRefreshListener {
             refreshWeatherInfo()
@@ -68,25 +69,14 @@ class ForecastFragment : Fragment() {
     }
 
     private fun getWeatherInfo() {
-        swipeToRefresh.isRefreshing = true
-
         viewModel.getForecastWeatherInfo(
-            {
-                swipeToRefresh.isRefreshing = false
-            },
-            {
-                swipeToRefresh.isRefreshing = false
-                Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show()
-            })
+            { },
+            { Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show() })
     }
 
     private fun refreshWeatherInfo() {
-        viewModel.getForecastWeatherInfo({
-            swipeToRefresh.isRefreshing = false
-        }, {
-            Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show()
-            swipeToRefresh.isRefreshing = false
-        })
+        viewModel.getForecastWeatherInfo({ },
+            { Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show() })
     }
 
     companion object {

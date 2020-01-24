@@ -20,6 +20,7 @@
         android:id="@+id/swipe_to_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:isRefreshingValue="@{viewModel.isRefreshing()}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="gone">
+                app:visibilityValue="@{viewModel.isVisible()}">
 
                 <TextView
                     android:id="@+id/city_name"

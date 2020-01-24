@@ -18,7 +18,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/black">
+        android:background="?android:attr/selectableItemBackground">
 
         <TextView
             android:id="@+id/day_of_week"
@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_twenty"
             android:text="@{DateUtils.myFormatToTime(forecastData.date)}"
-            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

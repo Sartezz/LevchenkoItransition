@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.openweather.R
 import com.example.openweather.app.App
+import com.example.openweather.databinding.ForecastFragmentBinding
 import com.example.openweather.ui.mvvm.weatherForecast.forecastAdapter.ForecastViewModelAdapter
 import kotlinx.android.synthetic.main.forecast_fragment.*
 import javax.inject.Inject
@@ -22,6 +22,7 @@ class ForecastFragment : Fragment() {
     lateinit var forecastViewModelFactory: ForecastViewModelFactory
     private lateinit var swipeToRefresh: SwipeRefreshLayout
     private lateinit var viewModel: ForecastViewModel
+    private lateinit var binding: ForecastFragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
@@ -35,12 +36,20 @@ class ForecastFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.forecast_fragment, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.forecast_fragment, container, false)
+        binding.lifecycleOwner = this
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeToRefresh = swipe_to_refresh
+
+        forecast_list_recyclerview.also {
+            it.setHasFixedSize(true)
+            it.adapter = adapter
+        }
 
         if (savedInstanceState == null) {
             getWeatherInfo()
@@ -50,15 +59,7 @@ class ForecastFragment : Fragment() {
             refreshWeatherInfo()
         }
 
-        forecast_list_recyclerview.also {
-            it.layoutManager = LinearLayoutManager(requireContext())
-            it.setHasFixedSize(true)
-            it.adapter = adapter
-        }
-
-        viewModel.weatherForecastInfo.observe(viewLifecycleOwner, Observer { forecastList ->
-            adapter.setForecastList(forecastList)
-        })
+        binding.viewModel = viewModel
     }
 
     override fun onDestroyView() {

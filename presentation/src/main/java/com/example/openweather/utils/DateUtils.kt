@@ -16,10 +16,7 @@ object DateUtils {
     }
 
     @JvmStatic
-    fun myFormatToTime(date: Long): String {
-        return SimpleDateFormat(
-            "dd MMMM",
-            Locale.getDefault()
-        ).format(date)
+    fun formatToDayOfMonth(date: Long): String {
+        return SimpleDateFormat("dd MMMM", Locale.getDefault()).format(date)
     }
 }

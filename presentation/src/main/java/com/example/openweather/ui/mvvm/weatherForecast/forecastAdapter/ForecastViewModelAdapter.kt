@@ -10,8 +10,9 @@ import com.example.domain.entity.forecastWeatherInfo.ForecastDayInfo
 import com.example.domain.entity.forecastWeatherInfo.WeatherForecast
 import com.example.openweather.AdapterInterface
 import com.example.openweather.R
-import com.example.utils.TYPE_DATE
-import com.example.utils.TYPE_INFO
+
+const val TYPE_DATE = 1
+const val TYPE_INFO = 2
 
 class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     ForecastClickListener, AdapterInterface<List<ForecastData>> {
@@ -44,10 +45,10 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     override fun onForecastClicked(data: ForecastDayInfo, position: Int) {
         val newForecastList: MutableList<ForecastData> = ArrayList()
         newForecastList.addAll(forecastList)
-        if (!data.isExpanded) {
-            newForecastList.addAll(position + 1, data.list)
-        } else {
+        if (data.isExpanded) {
             newForecastList.removeAll(data.list)
+        } else {
+            newForecastList.addAll(position + 1, data.list)
         }
         data.isExpanded = !data.isExpanded
         setData(newForecastList)
@@ -58,7 +59,7 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             is ForecastViewHolder -> holder.forecastBinding.weatherForecast =
                 forecastList[position] as WeatherForecast
             is ForecastDataViewHolder -> {
-                holder.bindItem(forecastList[position] as ForecastDayInfo, forecastList)
+                holder.bindItem(forecastList[position] as ForecastDayInfo)
             }
             else -> throw IllegalArgumentException()
         }

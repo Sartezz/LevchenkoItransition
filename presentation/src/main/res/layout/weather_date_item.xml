@@ -18,14 +18,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground">
+        android:background="@drawable/custom_ripple_effect">
 
         <TextView
             android:id="@+id/day_of_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_twenty"
-            android:text="@{DateUtils.myFormatToTime(forecastData.date)}"
+            android:text="@{DateUtils.formatToDayOfMonth(forecastData.date)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

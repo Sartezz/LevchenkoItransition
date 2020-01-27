@@ -16,7 +16,8 @@ const val TYPE_INFO = 2
 
 class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     ForecastClickListener, AdapterInterface<List<ForecastData>> {
-    private val forecastList: MutableList<ForecastData> = ArrayList()
+    val forecastList: MutableList<ForecastData> = ArrayList()
+    val isExpandedList: MutableList<Boolean> = ArrayList()
 
     override fun getItemCount(): Int = forecastList.size
 
@@ -71,6 +72,11 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         diffUtilResult.dispatchUpdatesTo(this)
         forecastList.clear()
         forecastList.addAll(data)
+        isExpandedList.clear()
+        data.map {
+            if (it is ForecastDayInfo)
+                isExpandedList.add(it.isExpanded)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {

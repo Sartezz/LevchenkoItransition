@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.domain.entity.forecastWeatherInfo.ForecastData
+import com.example.domain.entity.forecastWeatherInfo.ForecastDayInfo
 import com.example.openweather.R
 import com.example.openweather.app.App
 import com.example.openweather.databinding.ForecastFragmentBinding
@@ -46,6 +48,8 @@ class ForecastFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        saveIsListExpandedValues(savedInstanceState)
+
         swipeToRefresh = swipe_to_refresh
 
         forecast_list_recyclerview.also {
@@ -61,6 +65,19 @@ class ForecastFragment : Fragment() {
         }
 
         binding.viewModel = viewModel
+    }
+
+    override fun onResume() {
+        super.onResume()
+        repopulateList()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBooleanArray(
+            (resources.getString(R.string.isExpandedList)),
+            adapter.isExpandedList.toBooleanArray()
+        )
     }
 
     override fun onDestroyView() {
@@ -83,5 +100,27 @@ class ForecastFragment : Fragment() {
         fun newInstance(): ForecastFragment {
             return ForecastFragment()
         }
+    }
+
+    private fun saveIsListExpandedValues(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            adapter.isExpandedList.addAll(savedInstanceState.getBooleanArray(resources.getString(R.string.isExpandedList))!!.toMutableList())
+            for (index in 0 until adapter.forecastList.size) {
+                if (adapter.forecastList[index] is ForecastDayInfo) {
+                    (adapter.forecastList[index] as ForecastDayInfo).isExpanded =
+                        adapter.isExpandedList[index]
+                }
+            }
+        }
+    }
+
+    private fun repopulateList() {
+        val newForecastList: MutableList<ForecastData> = ArrayList()
+
+        (adapter.forecastList as List<ForecastDayInfo>).map {
+            newForecastList.add(it)
+            if (it.isExpanded) newForecastList.addAll(it.list)
+        }
+        adapter.setData(newForecastList)
     }
 }

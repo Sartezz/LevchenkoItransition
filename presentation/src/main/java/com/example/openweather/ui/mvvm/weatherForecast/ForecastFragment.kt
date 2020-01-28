@@ -18,7 +18,6 @@ import com.example.openweather.ui.mvvm.weatherForecast.forecastAdapter.ForecastV
 import kotlinx.android.synthetic.main.forecast_fragment.*
 import javax.inject.Inject
 
-const val SAVED_RECYCLER_STATE = "savedRecyclerState"
 const val SAVED_EXPANDED_LIST = "savedExpandedList"
 
 class ForecastFragment : Fragment() {
@@ -61,22 +60,13 @@ class ForecastFragment : Fragment() {
             it.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
 
-        if (savedInstanceState == null) {
-            getWeatherInfo()
-        } else {
-            adapter.setIsListExpandedValues()
-        }
+        if (savedInstanceState == null) getWeatherInfo()
 
         swipeToRefresh.setOnRefreshListener {
             refreshWeatherInfo()
         }
 
         binding.viewModel = viewModel
-    }
-
-    override fun onResume() {
-        super.onResume()
-        adapter.repopulateList()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

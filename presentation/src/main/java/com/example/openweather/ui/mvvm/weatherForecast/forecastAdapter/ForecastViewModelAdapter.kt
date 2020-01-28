@@ -16,7 +16,7 @@ const val TYPE_DATE = 1
 const val TYPE_INFO = 2
 
 class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
-    ForecastClickListener, AdapterInterface<List<ForecastData>> {
+    ForecastClickListener, AdapterInterface<MutableList<ForecastData>> {
     private val forecastList: MutableList<ForecastData> = ArrayList()
     private val isExpandedList: MutableList<Boolean> = ArrayList()
 
@@ -67,12 +67,19 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         }
     }
 
-    override fun setData(data: List<ForecastData>) {
+    override fun setData(data: MutableList<ForecastData>) {
         val diffUtilResult =
             DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(forecastList, data))
         diffUtilResult.dispatchUpdatesTo(this)
         forecastList.clear()
-        forecastList.addAll(data)
+        if (isExpandedList.isEmpty()) {
+            forecastList.addAll(data)
+        } else {
+            val newForecastList: MutableList<ForecastData> = ArrayList()
+            setIsListExpandedValues(data)
+            repopulateList(newForecastList, data)
+            forecastList.addAll(newForecastList)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -98,23 +105,24 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             ?.let { isExpandedList.addAll(it.toList()) }
     }
 
-    fun setIsListExpandedValues() {
-        for (index in 0 until this.forecastList.size) {
-            if (forecastList[index] is ForecastDayInfo) {
-                (forecastList[index] as ForecastDayInfo).isExpanded =
+    private fun setIsListExpandedValues(list: MutableList<ForecastData>) {
+        for (index in 0 until list.size) {
+            if (list[index] is ForecastDayInfo) {
+                (list[index] as ForecastDayInfo).isExpanded =
                     isExpandedList[index]
             }
         }
     }
 
-    fun repopulateList() {
-        val newForecastList: MutableList<ForecastData> = ArrayList()
-        forecastList.forEach {
+    fun repopulateList(
+        expandedForecastList: MutableList<ForecastData>,
+        closedList: MutableList<ForecastData>
+    ) {
+        closedList.forEach {
             if (it is ForecastDayInfo) {
-                newForecastList.add(it)
-                if (it.isExpanded) newForecastList.addAll(it.list)
+                expandedForecastList.add(it)
+                if (it.isExpanded) expandedForecastList.addAll(it.list)
             }
         }
-        setData(newForecastList)
     }
 }

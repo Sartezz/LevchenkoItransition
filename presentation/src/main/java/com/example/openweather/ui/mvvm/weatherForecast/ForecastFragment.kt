@@ -64,9 +64,6 @@ class ForecastFragment : Fragment() {
         if (savedInstanceState == null) {
             getWeatherInfo()
         } else {
-            adapter.restorePreviousState(
-                savedInstanceState, SAVED_RECYCLER_STATE, forecast_list_recyclerview
-            )
             adapter.setIsListExpandedValues()
         }
 
@@ -84,7 +81,6 @@ class ForecastFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        adapter.saveRecyclerState(outState, SAVED_RECYCLER_STATE, forecast_list_recyclerview)
         adapter.saveRecyclerData(outState, SAVED_EXPANDED_LIST)
     }
 

@@ -73,11 +73,6 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         diffUtilResult.dispatchUpdatesTo(this)
         forecastList.clear()
         forecastList.addAll(data)
-        isExpandedList.clear()
-        data.forEach {
-            if (it is ForecastDayInfo)
-                isExpandedList.add(it.isExpanded)
-        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -88,26 +83,13 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         }
     }
 
-    fun saveRecyclerState(outState: Bundle, stateKeyString: String, recyclerView: RecyclerView) {
-        outState.putParcelable(
-            stateKeyString, recyclerView.layoutManager?.onSaveInstanceState()
-        )
-    }
-
     fun saveRecyclerData(outState: Bundle, dataKeyString: String) {
+        isExpandedList.clear()
+        forecastList.forEach {
+            if (it is ForecastDayInfo)
+                isExpandedList.add(it.isExpanded)
+        }
         outState.putBooleanArray(dataKeyString, isExpandedList.toBooleanArray())
-    }
-
-    fun restorePreviousState(
-        savedInstanceState: Bundle,
-        stateKeyString: String,
-        recyclerView: RecyclerView
-    ) {
-        recyclerView.layoutManager?.onRestoreInstanceState(
-            savedInstanceState.getParcelable(
-                stateKeyString
-            )
-        )
     }
 
     fun restorePreviousData(savedInstanceState: Bundle, dataKeyString: String) {

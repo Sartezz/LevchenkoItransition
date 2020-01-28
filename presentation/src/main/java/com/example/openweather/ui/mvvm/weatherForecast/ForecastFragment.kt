@@ -11,14 +11,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.domain.entity.forecastWeatherInfo.ForecastData
-import com.example.domain.entity.forecastWeatherInfo.ForecastDayInfo
 import com.example.openweather.R
 import com.example.openweather.app.App
 import com.example.openweather.databinding.ForecastFragmentBinding
 import com.example.openweather.ui.mvvm.weatherForecast.forecastAdapter.ForecastViewModelAdapter
 import kotlinx.android.synthetic.main.forecast_fragment.*
 import javax.inject.Inject
+
+const val SAVED_RECYCLER_STATE = "savedRecyclerState"
+const val SAVED_EXPANDED_LIST = "savedExpandedList"
 
 class ForecastFragment : Fragment() {
     private val adapter: ForecastViewModelAdapter = ForecastViewModelAdapter()
@@ -31,6 +32,10 @@ class ForecastFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
+
+        if (savedInstanceState != null) {
+            adapter.restorePreviousData(savedInstanceState, SAVED_EXPANDED_LIST)
+        }
 
         viewModel =
             ViewModelProvider(this, forecastViewModelFactory).get(ForecastViewModel::class.java)
@@ -48,8 +53,6 @@ class ForecastFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        saveIsListExpandedValues(savedInstanceState)
-
         swipeToRefresh = swipe_to_refresh
 
         forecast_list_recyclerview.also {
@@ -58,7 +61,14 @@ class ForecastFragment : Fragment() {
             it.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
 
-        if (savedInstanceState == null) getWeatherInfo()
+        if (savedInstanceState == null) {
+            getWeatherInfo()
+        } else {
+            adapter.restorePreviousState(
+                savedInstanceState, SAVED_RECYCLER_STATE, forecast_list_recyclerview
+            )
+            adapter.setIsListExpandedValues()
+        }
 
         swipeToRefresh.setOnRefreshListener {
             refreshWeatherInfo()
@@ -69,15 +79,13 @@ class ForecastFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        repopulateList()
+        adapter.repopulateList()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBooleanArray(
-            (resources.getString(R.string.isExpandedList)),
-            adapter.isExpandedList.toBooleanArray()
-        )
+        adapter.saveRecyclerState(outState, SAVED_RECYCLER_STATE, forecast_list_recyclerview)
+        adapter.saveRecyclerData(outState, SAVED_EXPANDED_LIST)
     }
 
     override fun onDestroyView() {
@@ -86,41 +94,18 @@ class ForecastFragment : Fragment() {
     }
 
     private fun getWeatherInfo() {
-        viewModel.getForecastWeatherInfo(
-            { },
-            { Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show() })
+        viewModel.getForecastWeatherInfo {
+            Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show() }
     }
 
     private fun refreshWeatherInfo() {
-        viewModel.getForecastWeatherInfo({ },
-            { Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show() })
+        viewModel.getForecastWeatherInfo {
+            Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show() }
     }
 
     companion object {
         fun newInstance(): ForecastFragment {
             return ForecastFragment()
         }
-    }
-
-    private fun saveIsListExpandedValues(savedInstanceState: Bundle?) {
-        if (savedInstanceState != null) {
-            adapter.isExpandedList.addAll(savedInstanceState.getBooleanArray(resources.getString(R.string.isExpandedList))!!.toMutableList())
-            for (index in 0 until adapter.forecastList.size) {
-                if (adapter.forecastList[index] is ForecastDayInfo) {
-                    (adapter.forecastList[index] as ForecastDayInfo).isExpanded =
-                        adapter.isExpandedList[index]
-                }
-            }
-        }
-    }
-
-    private fun repopulateList() {
-        val newForecastList: MutableList<ForecastData> = ArrayList()
-
-        (adapter.forecastList as List<ForecastDayInfo>).map {
-            newForecastList.add(it)
-            if (it.isExpanded) newForecastList.addAll(it.list)
-        }
-        adapter.setData(newForecastList)
     }
 }

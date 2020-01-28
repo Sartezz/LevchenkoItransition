@@ -1,5 +1,6 @@
 package com.example.openweather.ui.mvvm.weatherForecast.forecastAdapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -16,8 +17,8 @@ const val TYPE_INFO = 2
 
 class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     ForecastClickListener, AdapterInterface<List<ForecastData>> {
-    val forecastList: MutableList<ForecastData> = ArrayList()
-    val isExpandedList: MutableList<Boolean> = ArrayList()
+    private val forecastList: MutableList<ForecastData> = ArrayList()
+    private val isExpandedList: MutableList<Boolean> = ArrayList()
 
     override fun getItemCount(): Int = forecastList.size
 
@@ -73,7 +74,7 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         forecastList.clear()
         forecastList.addAll(data)
         isExpandedList.clear()
-        data.map {
+        data.forEach {
             if (it is ForecastDayInfo)
                 isExpandedList.add(it.isExpanded)
         }
@@ -85,5 +86,53 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             is WeatherForecast -> TYPE_INFO
             else -> throw IllegalArgumentException()
         }
+    }
+
+    fun saveRecyclerState(outState: Bundle, stateKeyString: String, recyclerView: RecyclerView) {
+        outState.putParcelable(
+            stateKeyString, recyclerView.layoutManager?.onSaveInstanceState()
+        )
+    }
+
+    fun saveRecyclerData(outState: Bundle, dataKeyString: String) {
+        outState.putBooleanArray(dataKeyString, isExpandedList.toBooleanArray())
+    }
+
+    fun restorePreviousState(
+        savedInstanceState: Bundle,
+        stateKeyString: String,
+        recyclerView: RecyclerView
+    ) {
+        recyclerView.layoutManager?.onRestoreInstanceState(
+            savedInstanceState.getParcelable(
+                stateKeyString
+            )
+        )
+    }
+
+    fun restorePreviousData(savedInstanceState: Bundle, dataKeyString: String) {
+        isExpandedList.clear()
+        savedInstanceState.getBooleanArray(dataKeyString)
+            ?.let { isExpandedList.addAll(it.toList()) }
+    }
+
+    fun setIsListExpandedValues() {
+        for (index in 0 until this.forecastList.size) {
+            if (forecastList[index] is ForecastDayInfo) {
+                (forecastList[index] as ForecastDayInfo).isExpanded =
+                    isExpandedList[index]
+            }
+        }
+    }
+
+    fun repopulateList() {
+        val newForecastList: MutableList<ForecastData> = ArrayList()
+        forecastList.forEach {
+            if (it is ForecastDayInfo) {
+                newForecastList.add(it)
+                if (it.isExpanded) newForecastList.addAll(it.list)
+            }
+        }
+        setData(newForecastList)
     }
 }

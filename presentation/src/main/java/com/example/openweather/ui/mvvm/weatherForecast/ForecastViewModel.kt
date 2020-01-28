@@ -19,7 +19,7 @@ class ForecastViewModel(
     var isLoading: MutableLiveData<Boolean> = MutableLiveData()
     var weatherForecastInfo: MutableLiveData<List<ForecastData>> = MutableLiveData()
 
-    fun getForecastWeatherInfo(onSuccess: () -> Unit, onError: () -> Unit) {
+    fun getForecastWeatherInfo(onError: () -> Unit) {
         isLoading.value = true
         disposableList.add(
             forecastWeatherInfoRepository.getWeatherInfo(
@@ -34,7 +34,6 @@ class ForecastViewModel(
                         if (it.isNotEmpty()) {
                             isLoading.value = false
                             createForecastDataList(it)
-                            onSuccess()
                         } else {
                             onError()
                         }

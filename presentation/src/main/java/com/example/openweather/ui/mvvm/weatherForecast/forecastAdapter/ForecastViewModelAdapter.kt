@@ -53,7 +53,7 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             newForecastList.addAll(position + 1, data.list)
         }
         data.isExpanded = !data.isExpanded
-        setData(newForecastList)
+        expandItem(newForecastList)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -67,6 +67,14 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         }
     }
 
+    private fun expandItem(data: MutableList<ForecastData>) {
+        val diffUtilResult =
+            DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(forecastList, data))
+        diffUtilResult.dispatchUpdatesTo(this)
+        forecastList.clear()
+        forecastList.addAll(data)
+    }
+
     override fun setData(data: MutableList<ForecastData>) {
         val diffUtilResult =
             DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(forecastList, data))
@@ -77,7 +85,12 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         } else {
             val newForecastList: MutableList<ForecastData> = ArrayList()
             setIsListExpandedValues(data)
-            repopulateList(newForecastList, data)
+            data.forEach {
+                if (it is ForecastDayInfo) {
+                    newForecastList.add(it)
+                    if (it.isExpanded) newForecastList.addAll(it.list)
+                }
+            }
             forecastList.addAll(newForecastList)
         }
     }
@@ -110,18 +123,6 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             if (list[index] is ForecastDayInfo) {
                 (list[index] as ForecastDayInfo).isExpanded =
                     isExpandedList[index]
-            }
-        }
-    }
-
-    fun repopulateList(
-        expandedForecastList: MutableList<ForecastData>,
-        closedList: MutableList<ForecastData>
-    ) {
-        closedList.forEach {
-            if (it is ForecastDayInfo) {
-                expandedForecastList.add(it)
-                if (it.isExpanded) expandedForecastList.addAll(it.list)
             }
         }
     }

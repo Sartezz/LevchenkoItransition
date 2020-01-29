@@ -18,8 +18,6 @@ import com.example.openweather.ui.mvvm.weatherForecast.forecastAdapter.ForecastV
 import kotlinx.android.synthetic.main.forecast_fragment.*
 import javax.inject.Inject
 
-const val SAVED_EXPANDED_LIST = "savedExpandedList"
-
 class ForecastFragment : Fragment() {
     private val adapter: ForecastViewModelAdapter = ForecastViewModelAdapter()
     @Inject
@@ -33,7 +31,7 @@ class ForecastFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState != null) {
-            adapter.restorePreviousData(savedInstanceState, SAVED_EXPANDED_LIST)
+            adapter.restorePreviousData(savedInstanceState)
         }
 
         viewModel =
@@ -71,7 +69,7 @@ class ForecastFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        adapter.saveRecyclerData(outState, SAVED_EXPANDED_LIST)
+        adapter.saveRecyclerData(outState)
     }
 
     override fun onDestroyView() {

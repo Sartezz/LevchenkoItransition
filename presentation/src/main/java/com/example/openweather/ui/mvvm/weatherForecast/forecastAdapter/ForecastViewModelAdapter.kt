@@ -14,6 +14,8 @@ import com.example.openweather.R
 
 const val TYPE_DATE = 1
 const val TYPE_INFO = 2
+const val SAVED_EXPANDED_LIST = "savedExpandedList"
+const val NO_SUCH_VIEWTYPE = "No such viewtype"
 
 class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     ForecastClickListener, AdapterInterface<MutableList<ForecastData>> {
@@ -40,7 +42,7 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                     false
                 ), this
             )
-            else -> throw IllegalArgumentException()
+            else -> throw IllegalArgumentException(NO_SUCH_VIEWTYPE)
         }
     }
 
@@ -53,6 +55,13 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             newForecastList.addAll(position + 1, data.list)
         }
         data.isExpanded = !data.isExpanded
+
+        isExpandedList.clear()
+        newForecastList.forEach {
+            if (it is ForecastDayInfo) {
+                isExpandedList.add(it.isExpanded)
+            }
+        }
         expandItem(newForecastList)
     }
 
@@ -63,7 +72,7 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             is ForecastDataViewHolder -> {
                 holder.bindItem(forecastList[position] as ForecastDayInfo)
             }
-            else -> throw IllegalArgumentException()
+            else -> throw IllegalArgumentException(NO_SUCH_VIEWTYPE)
         }
     }
 
@@ -76,45 +85,49 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     }
 
     override fun setData(data: MutableList<ForecastData>) {
+        val newForecastList: MutableList<ForecastData> = ArrayList()
         val diffUtilResult =
             DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(forecastList, data))
         diffUtilResult.dispatchUpdatesTo(this)
         forecastList.clear()
+
         if (isExpandedList.isEmpty()) {
-            forecastList.addAll(data)
-        } else {
-            val newForecastList: MutableList<ForecastData> = ArrayList()
-            setIsListExpandedValues(data)
             data.forEach {
                 if (it is ForecastDayInfo) {
-                    newForecastList.add(it)
-                    if (it.isExpanded) newForecastList.addAll(it.list)
+                    isExpandedList.add(it.isExpanded)
                 }
             }
-            forecastList.addAll(newForecastList)
         }
+
+        setIsListExpandedValues(data)
+        data.forEach {
+            if (it is ForecastDayInfo) {
+                newForecastList.add(it)
+                if (it.isExpanded) newForecastList.addAll(it.list)
+            }
+        }
+        forecastList.addAll(newForecastList)
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (forecastList[position]) {
             is ForecastDayInfo -> TYPE_DATE
             is WeatherForecast -> TYPE_INFO
-            else -> throw IllegalArgumentException()
+            else -> throw IllegalArgumentException(NO_SUCH_VIEWTYPE)
         }
     }
 
-    fun saveRecyclerData(outState: Bundle, dataKeyString: String) {
+    fun saveRecyclerData(outState: Bundle) {
         isExpandedList.clear()
         forecastList.forEach {
             if (it is ForecastDayInfo)
                 isExpandedList.add(it.isExpanded)
         }
-        outState.putBooleanArray(dataKeyString, isExpandedList.toBooleanArray())
+        outState.putBooleanArray(SAVED_EXPANDED_LIST, isExpandedList.toBooleanArray())
     }
 
-    fun restorePreviousData(savedInstanceState: Bundle, dataKeyString: String) {
-        isExpandedList.clear()
-        savedInstanceState.getBooleanArray(dataKeyString)
+    fun restorePreviousData(savedInstanceState: Bundle) {
+        savedInstanceState.getBooleanArray(SAVED_EXPANDED_LIST)
             ?.let { isExpandedList.addAll(it.toList()) }
     }
 

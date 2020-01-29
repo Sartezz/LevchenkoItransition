@@ -16,6 +16,5 @@
     <string name="forecast">Forecast</string>
     <string name="today">Today</string>
     <string name="min_max_temperature">%1$.1f/%2$.1f°C</string>
-    <string name="isExpandedList">"isExpandedList"</string>
 
 </resources>

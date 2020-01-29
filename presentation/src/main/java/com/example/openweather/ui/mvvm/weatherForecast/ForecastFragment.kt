@@ -61,7 +61,7 @@ class ForecastFragment : Fragment() {
         if (savedInstanceState == null) getWeatherInfo()
 
         swipeToRefresh.setOnRefreshListener {
-            refreshWeatherInfo()
+            getWeatherInfo()
         }
 
         binding.viewModel = viewModel
@@ -80,11 +80,6 @@ class ForecastFragment : Fragment() {
     private fun getWeatherInfo() {
         viewModel.getForecastWeatherInfo {
             Toast.makeText(context, R.string.error_text, Toast.LENGTH_LONG).show() }
-    }
-
-    private fun refreshWeatherInfo() {
-        viewModel.getForecastWeatherInfo {
-            Toast.makeText(activity, R.string.error_text, Toast.LENGTH_LONG).show() }
     }
 
     companion object {

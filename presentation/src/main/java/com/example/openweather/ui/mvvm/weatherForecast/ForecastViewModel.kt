@@ -2,26 +2,24 @@ package com.example.openweather.ui.mvvm.weatherForecast
 
 import android.text.format.DateFormat
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.domain.entity.forecastWeatherInfo.ForecastData
 import com.example.domain.entity.forecastWeatherInfo.ForecastDayInfo
 import com.example.domain.entity.forecastWeatherInfo.WeatherForecast
 import com.example.domain.repository.ForecastWeatherInfoRepository
 import com.example.openweather.BuildConfig
+import com.example.openweather.ui.mvvm.baseClasses.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class ForecastViewModel(
     private val forecastWeatherInfoRepository: ForecastWeatherInfoRepository
-) : ViewModel() {
-    private val disposableList = CompositeDisposable()
+) : BaseViewModel() {
     var isLoading: MutableLiveData<Boolean> = MutableLiveData()
     var weatherForecastInfo: MutableLiveData<List<ForecastData>> = MutableLiveData()
 
     fun getForecastWeatherInfo(onError: () -> Unit) {
         isLoading.value = true
-        disposableList.add(
+        addDisposable(
             forecastWeatherInfoRepository.getWeatherInfo(
                 "Minsk",
                 "metric",
@@ -59,11 +57,6 @@ class ForecastViewModel(
             weatherData.last().list.add(list[index + 1])
         }
         weatherForecastInfo.value = weatherData
-    }
-
-    override fun onCleared() {
-        disposableList.dispose()
-        super.onCleared()
     }
 }
 

@@ -1,16 +1,15 @@
 package com.example.openweather.ui.mvvm.weatherInfo
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.domain.entity.weatherInfo.WeatherInfo
 import com.example.domain.repository.WeatherInfoRepository
 import com.example.openweather.BuildConfig
+import com.example.openweather.ui.mvvm.baseClasses.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class WeatherInfoViewModel(private val weatherInfoRepository: WeatherInfoRepository) : ViewModel() {
-    private val disposableList = CompositeDisposable()
+class WeatherInfoViewModel(private val weatherInfoRepository: WeatherInfoRepository) :
+    BaseViewModel() {
     var weatherInfo: MutableLiveData<WeatherInfo> = MutableLiveData()
     var isVisible: MutableLiveData<Boolean> = MutableLiveData()
     var isRefreshing: MutableLiveData<Boolean> = MutableLiveData()
@@ -18,7 +17,7 @@ class WeatherInfoViewModel(private val weatherInfoRepository: WeatherInfoReposit
     fun getWeatherInfo(onSuccess: () -> Unit, onError: () -> Unit) {
         isVisible.value = false
         isRefreshing.value = true
-        disposableList.add(
+        addDisposable(
             weatherInfoRepository.getWeatherInfo(
                 "Minsk",
                 "metric",
@@ -37,10 +36,5 @@ class WeatherInfoViewModel(private val weatherInfoRepository: WeatherInfoReposit
                         onError()
                     })
         )
-    }
-
-    override fun onCleared() {
-        disposableList.dispose()
-        super.onCleared()
     }
 }

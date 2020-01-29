@@ -12,7 +12,7 @@ class ForecastDataViewHolder(
     fun bindItem(data: ForecastDayInfo) {
         weatherDateItemBinding.forecastData = data
         itemView.setOnClickListener {
-            clickListener.onForecastClicked(data, adapterPosition)
+            clickListener.onForecastClicked(adapterPosition)
         }
     }
 }

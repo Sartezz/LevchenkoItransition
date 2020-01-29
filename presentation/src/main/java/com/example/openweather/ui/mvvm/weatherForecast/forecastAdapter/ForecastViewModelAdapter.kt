@@ -46,23 +46,26 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         }
     }
 
-    override fun onForecastClicked(data: ForecastDayInfo, position: Int) {
-        val newForecastList: MutableList<ForecastData> = ArrayList()
-        newForecastList.addAll(forecastList)
-        if (data.isExpanded) {
-            newForecastList.removeAll(data.list)
-        } else {
-            newForecastList.addAll(position + 1, data.list)
-        }
-        data.isExpanded = !data.isExpanded
-
-        isExpandedList.clear()
-        newForecastList.forEach {
-            if (it is ForecastDayInfo) {
-                isExpandedList.add(it.isExpanded)
+    override fun onForecastClicked(position: Int) {
+        val data = forecastList[position]
+        if (data is ForecastDayInfo) {
+            data.isExpanded = !data.isExpanded
+            val newForecastList: MutableList<ForecastData> = ArrayList()
+            newForecastList.addAll(forecastList)
+            if (data.isExpanded) {
+                newForecastList.addAll(position + 1, data.list)
+            } else {
+                newForecastList.removeAll(data.list)
             }
+
+            isExpandedList.clear()
+            newForecastList.forEach {
+                if (it is ForecastDayInfo) {
+                    isExpandedList.add(it.isExpanded)
+                }
+            }
+            expandItem(newForecastList)
         }
-        expandItem(newForecastList)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -86,10 +89,6 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
     override fun setData(data: MutableList<ForecastData>) {
         val newForecastList: MutableList<ForecastData> = ArrayList()
-        val diffUtilResult =
-            DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(forecastList, data))
-        diffUtilResult.dispatchUpdatesTo(this)
-        forecastList.clear()
 
         if (isExpandedList.isEmpty()) {
             data.forEach {
@@ -106,6 +105,11 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                 if (it.isExpanded) newForecastList.addAll(it.list)
             }
         }
+
+        val diffUtilResult =
+            DiffUtil.calculateDiff(ForecastWeatherDiffUtilCallback(forecastList, newForecastList))
+        diffUtilResult.dispatchUpdatesTo(this)
+        forecastList.clear()
         forecastList.addAll(newForecastList)
     }
 
@@ -134,8 +138,7 @@ class ForecastViewModelAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     private fun setIsListExpandedValues(list: MutableList<ForecastData>) {
         for (index in 0 until list.size) {
             if (list[index] is ForecastDayInfo) {
-                (list[index] as ForecastDayInfo).isExpanded =
-                    isExpandedList[index]
+                (list[index] as ForecastDayInfo).isExpanded = isExpandedList[index]
             }
         }
     }
